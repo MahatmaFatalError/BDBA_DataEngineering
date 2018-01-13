@@ -1,4 +1,3 @@
-from kafka import KafkaProducer
 from sodapy import Socrata
 
 client = Socrata("data.cityofnewyork.us", "vWSR699ElPnWWrJDH90VsNXij", username="weber.johanes@gmail.com", password="test#123")
