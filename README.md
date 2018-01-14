@@ -1,4 +1,4 @@
-#Johannes
+# Johannes
 
 ### Prerequisites
 
@@ -24,6 +24,6 @@
 7. https://www.cloudkarafka.com/blog/2016-12-13-part2-3-apache-kafka-for-beginners_example-and-sample-code-python.html
 8. https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv
 
-#Julian
+# Julian
 
 **...**
