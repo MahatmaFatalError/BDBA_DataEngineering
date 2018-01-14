@@ -1,9 +1,12 @@
-#Johannes
+# Johannes
 
 ### Prerequisites
 
 1. Install Kafka:
     - https://dzone.com/articles/running-apache-kafka-on-windows-os (install with binary file)
+
+2. Install PostgreSQL
+    - https://www.postgresql.org/download/
 
 2. Install Python and pip
     - https://matthewhorne.me/how-to-install-python-and-pip-on-windows-10/
@@ -12,6 +15,8 @@
 
         $pip install sodapy
         $pip install kafka-python
+        %pip install psycopg2
+        $pip install sqlalchemy
 
 ### Helpful Links
 
@@ -24,6 +29,6 @@
 7. https://www.cloudkarafka.com/blog/2016-12-13-part2-3-apache-kafka-for-beginners_example-and-sample-code-python.html
 8. https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv
 
-#Julian
+# Julian
 
 **...**
