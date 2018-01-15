@@ -1,3 +1,5 @@
+![Title Picture](https://cdn.asme.org/wwwasmeorg/media/ASMEMedia/CareerEducation/EarlyCareerEngineers/METoday/ThinkstockPhotos-507986987.jpg)
+
 # Johannes
 
 ### Prerequisites
@@ -17,6 +19,7 @@
         $pip install kafka-python
         %pip install psycopg2
         $pip install sqlalchemy
+
 
 ### Helpful Links
 
