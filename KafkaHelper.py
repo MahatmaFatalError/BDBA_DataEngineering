@@ -1,11 +1,4 @@
-#postgre pswd: test#123
-from kafka import KafkaConsumer, KafkaProducer
-
-
-class BDBAConsumer:
-
-    def __init__(self, topic):
-        self.consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092')
+from kafka import KafkaProducer
 
 
 class BDBAProducer:

@@ -23,7 +23,7 @@
 
 ### Helpful Links
 
-1. https://dzone.com/articles/running-apache-kafka-on-windows-os
+1. <https://medium.com/@shaaslam/installing-apache-kafka-on-windows-495f6f2fd3c8>
 2. https://github.com/xmunoz/sodapy
 3. https://dev.socrata.com/docs/queries/
 4. https://github.com/dpkp/kafka-python
@@ -31,6 +31,15 @@
 6. https://kafka-python.readthedocs.io/en/master/apidoc/modules.html
 7. https://www.cloudkarafka.com/blog/2016-12-13-part2-3-apache-kafka-for-beginners_example-and-sample-code-python.html
 8. https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv
+9. https://suhas.org/sqlalchemy-tutorial/
+10. https://dzone.com/articles/running-apache-kafka-on-windows-os
+
+### Sandbox
+
+Jupyter Notebook
+- http://localhost:8888/notebooks/BDBA_DataEngineering.ipynb?kernel_name=python3
+
+
 
 # Julian
 
