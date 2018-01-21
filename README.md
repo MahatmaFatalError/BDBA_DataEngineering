@@ -33,6 +33,7 @@
 8. https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv
 9. https://suhas.org/sqlalchemy-tutorial/
 10. https://dzone.com/articles/running-apache-kafka-on-windows-os
+11. https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
 
 ### Sandbox
 

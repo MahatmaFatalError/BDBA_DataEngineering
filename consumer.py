@@ -37,5 +37,4 @@ for message in requests:
         'longitude': longitude,
         'latitude': latitude
     }
-
     db_helper.insert(entry, 'service_request')
