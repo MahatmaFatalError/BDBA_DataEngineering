@@ -19,6 +19,8 @@
         $pip install kafka-python
         %pip install psycopg2
         $pip install sqlalchemy
+        $pip install bokah
+        $pip install matplotlib
 
 
 ### Helpful Links
@@ -34,6 +36,7 @@
 9. https://suhas.org/sqlalchemy-tutorial/
 10. https://dzone.com/articles/running-apache-kafka-on-windows-os
 11. https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
+12. https://www.heise.de/developer/artikel/Effiziente-Datenverarbeitung-mit-Kafka-3877195.html?seite=all
 
 ### Sandbox
 
