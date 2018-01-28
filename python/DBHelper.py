@@ -34,3 +34,9 @@ class DBHelper:
             if column.key != 'id':
                 table_names.append(column.key)
         return table_names
+
+    def selectAllEntriesWhere(self, table_name, key, value):
+        results = self.meta.tables[table_name]
+        statement = results.select().where(getattr(results.c, key) == value)
+        return self.con.execute(statement)
+

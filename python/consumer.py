@@ -3,7 +3,7 @@ from DBHelper import DBHelper
 import json
 
 
-requests = KafkaConsumer("ServiceRequests", bootstrap_servers='localhost:9092')
+requests = KafkaConsumer("ServiceRequests", bootstrap_servers='localhost:9092', auto_offset_reset='earliest')
 db_table = 'service_request'
 db_helper = DBHelper('bdba')
 db_columns = db_helper.get_table_column_names(db_table)
