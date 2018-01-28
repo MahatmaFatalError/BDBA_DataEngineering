@@ -17,11 +17,15 @@
 
         $pip install sodapy
         $pip install kafka-python
-        %pip install psycopg2
+        $pip install psycopg2
         $pip install sqlalchemy
-        $pip install bokah
+        $pip install bokeh
         $pip install matplotlib
 
+
+### Kafka Start Command
+
+.\bin\windows\kafka-server-start.bat .\config\server.properties
 
 ### Helpful Links
 
@@ -37,13 +41,6 @@
 10. https://dzone.com/articles/running-apache-kafka-on-windows-os
 11. https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
 12. https://www.heise.de/developer/artikel/Effiziente-Datenverarbeitung-mit-Kafka-3877195.html?seite=all
-
-### Sandbox
-
-Jupyter Notebook
-- http://localhost:8888/notebooks/BDBA_DataEngineering.ipynb?kernel_name=python3
-
-
 
 # Julian
 
