@@ -21,12 +21,16 @@ class DBHelper:
 
         return con, meta
 
-    def insert(self, entry, tablename):
-        table = self.meta.tables[tablename]
+    def insert(self, entry, table_name):
+        table = self.meta.tables[table_name]
         statement = table.insert().values(entry)
         result = self.con.execute(statement)
         return result.inserted_primary_key
 
-
-
-
+    def get_table_column_names(self, table_name):
+        table = self.meta.tables[table_name]
+        table_names = []
+        for column in table.c:
+            if column.key != 'id':
+                table_names.append(column.key)
+        return table_names

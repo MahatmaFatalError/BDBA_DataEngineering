@@ -20,7 +20,6 @@
         $pip install psycopg2
         $pip install sqlalchemy
         $pip install bokeh
-        $pip install matplotlib
 
 
 ### Kafka Start Command
@@ -45,3 +44,28 @@
 # Julian
 
 **...**
+
+# Themen
+
+## Tools & Frameworks
+- Kafka, Python, Zeppelin, Java
+- sodapy, sqlalchemy, bokeh etc...
+
+## Inhalte
+- Programm erklären
+- Szenario ausdenken
+
+## Probleme
+- Lambda vs. Kappa Stichwort: Stream ist unendlich
+- Paging
+
+## Schritte
+- alles genauestens erklären ;-)
+
+## Entscheidungen
+- PostgreSQL
+- Python
+- Jupyter
+- Kappa statt Lambda
+
+
