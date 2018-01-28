@@ -1,0 +1,62 @@
+% Preambel mit Einstellungen importieren
+\input{config/preambel}
+
+% Dokumenteninfos importieren
+\input{config/docinfo.tex}
+
+\begin{document}
+\frontmatter
+
+% Römische Ziffern für die "Front-Matter"
+\setcounter{page}{0}
+\changefont{ptm}{m}{n}  %Times New Roman für den Fließtext
+\renewcommand{\rmdefault}{ptm}
+
+% Titelblatt
+\input{config/titelblatt}
+
+% Inhaltsverzeichnis erzeugen
+\phantomsection
+\tableofcontents
+
+% Korrigiert Nummerierung bei mehrseitigem Inhaltsverzeichnis
+\cleardoublepage
+\newcounter{frontmatterpage}
+\setcounter{frontmatterpage}{\value{page}}
+
+% Arabische Zahlen für den Hauptteil
+\mainmatter
+
+% Den Hauptteil mit vergrößertem Zeilenabstand setzen
+\onehalfspacing
+
+% ------------------------------------------------------------------
+% Hauptteil der Arbeit
+\input{kapitel/kapitelEins}
+% ------------------------------------------------------------------
+
+\label{lastpage}
+
+% Neue Seite
+\cleardoublepage
+\phantomsection
+
+% Backmatter mit normalem Zeilenabstand setzen
+\backmatter
+\singlespacing
+
+% Römische Ziffern für die "Back-Matter", fortlaufend mit frontmatter
+\pagenumbering{roman}
+\setcounter{page}{\value{frontmatterpage}}
+
+% Abbildungsverzeichnis erzeugen
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoffigures
+
+% Abkürzungsverzeichnis
+\cleardoublepage
+\input{config/abkuerzungen}
+
+\end{document}

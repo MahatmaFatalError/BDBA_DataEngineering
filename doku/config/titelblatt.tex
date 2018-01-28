@@ -1,0 +1,103 @@
+% -------------------------------------------------------
+% In dieser Datei sollten eigentlich keine Veränderungen mehr
+% notwendig sein.
+% -------------------------------------------------------
+
+\thispagestyle{empty}
+
+% -------------------------------------------------------
+\newcommand{\srhfakultaet}{Fakultät für Information, Medien und Design}%
+\newcommand{\srhstudiengang}{Big Data und Business Analytics}%
+\newcommand{\srhtyp}{Projektbericht}
+\newcommand{\srhmaster}{Master of Science (M.Sc.)}
+\newcommand{\srhkoerperschaft}{SRH Heidelberg}
+\newcommand{\srhautorbib}{\srhautornname, \srhautorvname} % Autor Nachname, Vorname
+\newcommand{\srhautor}{\srhautorvname \ \srhautornname} % Autor Vorname Nachname
+\newcommand{\srhherbert}{Prof. Dr. Herbert Schuster} % Autor Vorname Nachname
+\newcommand{\srhfrank}{Frank Schulz} % Autor Vorname Nachname
+\newcommand{\srhbarbara}{Prof. Dr. Barbara Sprick}
+\newcommand{\srhbianca}{Bianca Staffen}
+
+% Daten in die Standard-Felder von KOMA-Script eintragen
+\titlehead{\srhtyp\ in\  \srhstudiengang}
+\subject{}
+\title{\srhtitel}
+\author{\srhauthor}
+\date{\small{\srhdatum}}
+
+% Daten für das fertige PDF-Dokument
+\hypersetup{
+  pdftitle={\srhtitel},  % Titel des Dokuments
+  pdfauthor={\srhautor},              % Autor
+  pdfsubject={\srhtyp\ in\ \srhstudiengang},                % Thema
+  pdfkeywords={\srhtitel}         % Schlüsselworte
+}
+
+\newlength{\bindekorrektur}
+\newlength{\seitenanfang}
+\newlength{\seitenbreite}
+
+\setlength{\bindekorrektur}{-46mm}   % Korrektur der horizontalen Position
+\setlength{\seitenanfang}{0mm}       % Korrektur der vertikalen Position
+\setlength{\seitenbreite}{297mm}
+
+\begin{figure}[h]
+  \flushright
+  \includegraphics[width=7cm]{srh_logo.png}
+\end{figure}
+
+
+% Titel der Arbeit
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 62mm) % 4,5cm vom linken Rand und 6,0cm vom oberen Rand
+  \centering\Large\sffamily
+  \vspace{4mm} % Kleiner zusätzlicher Abstand oben für bessere Optik
+  \textbf{\srhtitel}
+\end{textblock*}%
+
+% Projektbericht
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 103mm)
+  \centering\large\sffamily
+  \srhtyp
+  \vspace{2mm} \\
+  von
+\end{textblock*}
+
+% Name
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 130mm)
+  \centering\large
+  \textbf{\srhautor} \\
+  \vspace{2mm}
+  Matrikelnummer: \srhmatnr
+\end{textblock*}
+
+% Datum
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 155mm)
+  \centering\large
+  \textsf{\srhdatum}
+\end{textblock*}
+
+% Fakultät
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 180mm)
+  \centering\large\sffamily
+  \srhkoerperschaft \\
+  \vspace{2mm}
+  \srhfakultaet \\
+  \vspace{2mm}
+  \srhstudiengang
+\end{textblock*}
+
+% Dozenten
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 250mm)
+  \centering\large\sffamily
+  Dozenten \\
+  \vspace{2mm}
+  \srhherbert \\
+  \vspace{2mm}
+  \srhfrank
+\end{textblock*}
+
+% Bibliographische Informationen
+\null\newpage
+\thispagestyle{empty}
+
+\newcommand{\srhbib}{\begin{small}\textbf{\srhautorbib}: \\ \srhtitel \ / \srhautor. \ -- \\ \srhtyp, \srhort \: \srhkoerperschaft, \srhjahr. \pageref{lastpage} Seiten.\end{small}}
