@@ -21,6 +21,9 @@ class DBHelper:
 
         return con, meta
 
+    def get_connection(self):
+        return self.con
+
     def insert(self, entry, table_name):
         table = self.meta.tables[table_name]
         statement = table.insert().values(entry)
