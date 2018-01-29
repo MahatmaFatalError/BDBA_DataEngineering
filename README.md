@@ -20,6 +20,7 @@
         $pip install psycopg2
         $pip install sqlalchemy
         $pip install bokeh
+        $pip install sql_magic
 
 
 ### Kafka Start Command
@@ -40,6 +41,10 @@
 10. https://dzone.com/articles/running-apache-kafka-on-windows-os
 11. https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook
 12. https://www.heise.de/developer/artikel/Effiziente-Datenverarbeitung-mit-Kafka-3877195.html?seite=all
+13. https://github.com/catherinedevlin/ipython-sql
+14. https://bokeh.pydata.org/en/latest/docs/user_guide/categorical.html#userguide-categorical
+15. https://www.confluent.io/blog/simplest-useful-kafka-connect-data-pipeline-world-thereabouts-part-1/
+16. https://docs.confluent.io/current/installation/installing_cp.html
 
 # Julian
 
