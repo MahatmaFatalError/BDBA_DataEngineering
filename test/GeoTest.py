@@ -16,3 +16,4 @@ for result in results:
 print(count)
 
 plotter.plot_geo(lat_list=lat_list, lon_list=lon_list, notebook=False)
+# plotter.plot_bar(x_values=x_values, y_values=y_values)

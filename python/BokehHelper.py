@@ -38,14 +38,20 @@ class BokehPlotter():
             output_file("gmap_plot.html")
         show(plot)
 
-    def plot_bar(self, values = [1.2, 2.5, 3.7], notebook=False, mode="v"):
-        plot = figure(plot_width=400, plot_height=400)
-        if mode == "v":
-            plot.vbar(x=[1, 2, 3], width=0.5, bottom=0,
-                      top=values, color="firebrick")
-        else:
-            plot.hbar(y=[1, 2, 3], height=0.5, left=0,
-                      right=values, color="navy")
+    def plot_bar(self, x_values, y_values, notebook=False):
+        source = ColumnDataSource(data=dict(x_values=x_values, y_values=y_values))
+
+        y_range_low = 0
+        y_range_high = max(y_values) * 1.1
+        y_range = (y_range_low, y_range_high)
+
+        plot = figure(x_range=x_values, y_range=y_range, plot_height=500, title="Title")
+
+        plot.vbar(x='x_values', width=0.9, top='y_values', source=source)
+
+        plot.xgrid.grid_line_color = None
+        plot.xaxis.major_label_orientation = 1.2
+        plot.x_range.range_padding = 0.1
 
         if notebook:
             output_notebook()
