@@ -13,6 +13,7 @@
 \newcommand{\srhkoerperschaft}{SRH Heidelberg}
 \newcommand{\srhautorbib}{\srhautornname, \srhautorvname} % Autor Nachname, Vorname
 \newcommand{\srhautor}{\srhautorvname \ \srhautornname} % Autor Vorname Nachname
+\newcommand{\srhautorzwei}{\srhautorzweivname \ \srhautorzweinname} % Autor Vorname Nachname
 \newcommand{\srhherbert}{Prof. Dr. Herbert Schuster} % Autor Vorname Nachname
 \newcommand{\srhfrank}{Frank Schulz} % Autor Vorname Nachname
 \newcommand{\srhbarbara}{Prof. Dr. Barbara Sprick}
@@ -67,17 +68,27 @@
   \centering\large
   \textbf{\srhautor} \\
   \vspace{2mm}
-  Matrikelnummer: \srhmatnr
+  Matrikelnummer: \srhmatnr \\
+  \vspace{5mm}
+  und
+\end{textblock*}
+
+% Name 2
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 155mm)
+  \centering\large
+  \textbf{\srhautorzwei} \\
+  \vspace{2mm}
+  Matrikelnummer: \srhmatnrzwei
 \end{textblock*}
 
 % Datum
-\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 155mm)
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 185mm)
   \centering\large
   \textsf{\srhdatum}
 \end{textblock*}
 
 % Fakultät
-\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 180mm)
+\begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 205mm)
   \centering\large\sffamily
   \srhkoerperschaft \\
   \vspace{2mm}
@@ -86,12 +97,10 @@
   \srhstudiengang
 \end{textblock*}
 
-% Dozenten
+% Dozent(en)
 \begin{textblock*}{\seitenbreite}(\bindekorrektur,\seitenanfang + 250mm)
   \centering\large\sffamily
-  Dozenten \\
-  \vspace{2mm}
-  \srhherbert \\
+  Dozent \\
   \vspace{2mm}
   \srhfrank
 \end{textblock*}

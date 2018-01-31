@@ -47,6 +47,10 @@
 15. https://www.confluent.io/blog/simplest-useful-kafka-connect-data-pipeline-world-thereabouts-part-1/
 16. https://docs.confluent.io/current/installation/installing_cp.html
 
+### Interessante Links
+1. http://jupyter-gmaps.readthedocs.io/en/latest/tutorial.html#basic-concepts
+2. https://plot.ly/python/ipython-notebook-tutorial/
+
 # Julian
 
 **...**
