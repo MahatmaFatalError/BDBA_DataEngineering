@@ -45,7 +45,7 @@ class BokehPlotter():
         y_range_high = max(y_values) * 1.1
         y_range = (y_range_low, y_range_high)
 
-        plot = figure(x_range=x_values, y_range=y_range, plot_height=500, title="Title")
+        plot = figure(x_range=x_values, y_range=y_range, plot_height=1000, title="Title")
 
         plot.vbar(x='x_values', width=0.9, top='y_values', source=source)
 

@@ -21,6 +21,7 @@
         $pip install sqlalchemy
         $pip install bokeh
         $pip install sql_magic
+        $pip install ipython-sql
 
 
 ### Kafka Start Command
@@ -72,5 +73,10 @@
 - Python
 - Jupyter
 - Kappa statt Lambda
+
+### Aufteilung/Ablauf
+
+- Was war die Aufgabe?
+- Tools ()
 
 
