@@ -5,7 +5,7 @@ import sqlalchemy
 class DBHelper:
 
     def __init__(self, database):
-        self.con, self.meta = self.connect('postgres', 'test#123', database)
+        self.connect('postgres', 'test#123', database)
 
     def connect(self, user, password, db, host='localhost', port=5432):
         # We connect with the help of the PostgreSQL URL
@@ -14,12 +14,10 @@ class DBHelper:
         url = url.format(user, password, host, port, db)
 
         # The return value of create_engine() is our connection object
-        con = sqlalchemy.create_engine(url, client_encoding='utf8')
+        self.con = sqlalchemy.create_engine(url, client_encoding='utf8')
 
         # We then bind the connection to MetaData()
-        meta = sqlalchemy.MetaData(bind=con, reflect=True)
-
-        return con, meta
+        self.meta = sqlalchemy.MetaData(bind=self.con, reflect=True)
 
     def get_connection(self):
         return self.con
@@ -38,8 +36,7 @@ class DBHelper:
                 table_names.append(column.key)
         return table_names
 
-    def selectAllEntriesWhere(self, table_name, key, value):
+    def select_all_entries_where(self, table_name, key, value):
         results = self.meta.tables[table_name]
         statement = results.select().where(getattr(results.c, key) == value)
         return self.con.execute(statement)
-

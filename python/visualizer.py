@@ -7,7 +7,7 @@ count = 0
 lon_list = []
 lat_list = []
 
-results = db.selectAllEntriesWhere(table_name="service_request", key="borough", value="BROOKLYN")
+results = db.select_all_entries_where(table_name="service_request", key="borough", value="BROOKLYN")
 
 for result in results:
     lat_list.append(result["latitude"])

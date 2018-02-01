@@ -17,7 +17,7 @@ to_date = tmp_date.isoformat()
 soda = SodaConnector("data.cityofnewyork.us")
 topic = 'ServiceRequests'
 producer = BDBAProducer()
-limit = 50
+limit = 10000
 
 
 def process():
@@ -33,7 +33,7 @@ def process():
         json_string = json.dumps(request)
         json_byte = b"" + json_string
         producer.send_service_request(topic, json_byte)
-        time.sleep(random.randint(0, 50) * 0.1)
+        # time.sleep(random.randint(0, 50) * 0.1)
         print("Done...")
 
     return len(requests), date

@@ -15,13 +15,13 @@
 
 3. Install required Libraries
 
-        $pip install sodapy
-        $pip install kafka-python
-        $pip install psycopg2
-        $pip install sqlalchemy
-        $pip install bokeh
-        $pip install sql_magic
-        $pip install ipython-sql
+        $ pip install sodapy
+        $ pip install kafka-python
+        $ pip install psycopg2
+        $ pip install sqlalchemy
+        $ pip install bokeh
+        $ pip install sql_magic
+        $ pip install ipython-sql
 
 
 ### Kafka Start Command

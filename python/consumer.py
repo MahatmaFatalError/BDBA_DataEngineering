@@ -14,7 +14,7 @@ for message in requests:
     db_entry = {}
 
     for column in db_columns:
-        if column in message_json: # check if key is available in request object
+        if column in message_json:  # check if key is available in request object
             db_entry[column] = message_json[column]
 
     db_helper.insert(db_entry, db_table)
