@@ -58,3 +58,15 @@ class BokehPlotter():
         else:
             output_file("bar_plot.html")
         show(plot)
+
+    def plot_time(self, x_values, y_values, notebook=False):
+        # create a new plot with a datetime axis type
+        plot = figure(plot_width=800, plot_height=250, x_axis_type="datetime")
+
+        plot.line(x_values, y_values, color='navy', alpha=0.5)
+
+        if notebook:
+            output_notebook()
+        else:
+            output_file("time_plot.html")
+        show(plot)
