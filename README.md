@@ -1,8 +1,8 @@
-![Title Picture](https://cdn.asme.org/wwwasmeorg/media/ASMEMedia/CareerEducation/EarlyCareerEngineers/METoday/ThinkstockPhotos-507986987.jpg)
+![Title Picture](http://fouryears.eu/wp-content/uploads/2015/09/kdnuggets-jobs-2014-titles-300x177.jpg)
 
-# Johannes
+# **Johannes**
 
-### Prerequisites
+## Prerequisites
 
 1. Install Kafka:
     - https://dzone.com/articles/running-apache-kafka-on-windows-os (install with binary file)
@@ -20,17 +20,23 @@
         $ pip install psycopg2
         $ pip install sqlalchemy
         $ pip install bokeh
-        $ pip install sql_magic
         $ pip install ipython-sql
+        $ pip install gmaps
 
+4. Activate gmaps Widget in Jupyter
 
-### Kafka Start Command
+        $ jupyter nbextension enable --py --sys-prefix widgetsnbextension
+        $ jupyter nbextension enable --py --sys-prefix gmaps
+
+5. Retrive Google Maps API Key for using Google Maps for visualization
+  - http://jupyter-gmaps.readthedocs.io/en/latest/authentication.html
+
+## Kafka Start Command
 
 .\bin\windows\kafka-server-start.bat .\config\server.properties
 
-### Helpful Links
-
-1. <https://medium.com/@shaaslam/installing-apache-kafka-on-windows-495f6f2fd3c8>
+## Helpful Links
+1. https://medium.com/@shaaslam/installing-apache-kafka-on-windows-495f6f2fd3c8
 2. https://github.com/xmunoz/sodapy
 3. https://dev.socrata.com/docs/queries/
 4. https://github.com/dpkp/kafka-python
@@ -47,19 +53,20 @@
 15. https://www.confluent.io/blog/simplest-useful-kafka-connect-data-pipeline-world-thereabouts-part-1/
 16. https://docs.confluent.io/current/installation/installing_cp.html
 
-### Interessante Links
+## Interessante Links
 1. http://jupyter-gmaps.readthedocs.io/en/latest/tutorial.html#basic-concepts
 2. https://plot.ly/python/ipython-notebook-tutorial/
+3. https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
-# Julian
+# **Julian**
 
-**...**
+...
 
-# Themen
+# **Themen**
 
 ## Tools & Frameworks
 - Kafka, Python, Zeppelin, Java
-- sodapy, sqlalchemy, bokeh etc...
+- sodapy, sqlalchemy, bokeh etc.
 
 ## Inhalte
 - Programm erklären
@@ -77,10 +84,3 @@
 - Python
 - Jupyter
 - Kappa statt Lambda
-
-### Aufteilung/Ablauf
-
-- Was war die Aufgabe?
-- Tools ()
-
-
