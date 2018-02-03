@@ -15,26 +15,21 @@ Für unsere Aufgabe ist darauf zu achten, dass der Datenstrom über eine API öf
 Hierbei wurde uns lediglich die Anforderung gestellt, das wir für die Speicherung die Streaming Plattform Apache Kafka verwenden.
 Des Weiteren war es uns gestattet die Daten in einer relationen Datenbank, NoSQL Datenbank oder mit Spark Streaming speichern,
 falls nur die Nutzung von Apache Kafka unsere Anforderungen nicht genügt.
-\paragraph{Data Retrieval} ist die Beschaffung der Daten aus einer Datenbank mit SQL Abfragen und die abschließende Audgabe
+\paragraph{Data Retrieval} ist die Beschaffung der Daten aus einer Datenbank mit SQL Abfragen und die abschließende Ausgabe
 der Ergebnisse in Form von Tabellen oder einfachen Visualisierungen.
+Es sollten mindestens drei verschieden SQL Abfragen abgesetzt werden mit unterschiedlichen Filter- und Agreggatsfunktionen sowie einer Teilaggregation wie \zb{} GROUP BY.
 Die Visualisierung der Daten sollte in einem virtuellen Notebook erfolgen.
 Als virtuelles Notebook durften wir uns entscheiden zwischen Apache Zeppelin oder Jupyter.
 
-Unsere Aufgabe ist es ein geeignetes Szenario für die Bewältigung dieser Aufgabe zu finden und umzusetzen.
+Unsere Aufgabe ist es eine geeignete Vorgehensweise für die Bewältigung dieser Aufgabe zu finden und umzusetzen.
 
-Wir entschieden uns für unser Szenario die Socrata \ac{API} von NYC Open Data zu nutzen.
-NYC Open Data ermöglicht es allen "New Yorkern" und somit auch der ganzen Welt sogenannte Open Data also frei zugängliche Daten
+Wir entschieden uns für unser Szenario Daten von NYC Open Data zu nutzen.
+NYC Open Data ermöglicht es allen "New Yorkern" und somit auch der ganzen Welt sog. Open Data also frei zugängliche Daten
 einfach zu konsumieren.\footnote{\cite{NYCOpenData}}.
 
 NYC Open Data ermöglicht es uns sowohl einen kontinuierlichen Data Stream als auch eine statische \ac{CSV} Datei zu konsumieren.
 Dank diesem Umstand entschieden wir uns im Rahmen dieses Projektes beide Möglichkeiten umzusetzen und zu vergleichen.
-Die Data Ingestion mit der \ac{CSV} Datei setzte Julian Ruppel mit der Programmiersprache Java um und
-den kontunierlichen Datenstrom über die Socrata \ac{API} wurde von Johannes Weber mit der Programmiersprache Python
-ausgelesen.
-
 Auch bei der Data Retrieval entschieden wir uns dafür sowohl Apache Zeppelin als auch Jupyter zu nutzen und zu vergleichen.
-Die Beschaffung und Auswertung der Daten mit Apache Zeppelin übernahm Julian Ruppel.
-Johannes Weber bereitete die Daten mit der Programmiersparche Python auf und visualisierte sie in einem Jupyter Notebook.
 
 \fullref{chap:tools} beschäftigt sich detailierter mit den verwendeten Tools, Frameworks und Programmiersprachen und \fullref{chap:loesung}
 erläutert das gewählte Szenario mit den Unterkapitel Data Ingestion, Data Storage und Data Retrieval sowie der verwendeten Architektur. \footnote{Einleitung von Johannes Weber}

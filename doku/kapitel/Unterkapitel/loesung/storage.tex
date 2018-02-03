@@ -1,3 +1,63 @@
 \section{Data Storage}
 
-Data Storage
+Wie in \fullref{sec:arch} schon erläutert benutzen wir Apache Kafka um die kompletten Datensätze zwischenzuspeichern.
+Ein sog. "Consumer" liest die Daten von Apache Kafka aus und speichert die relevanten Teile der Datensätze in der Datenbank.
+Als Datenksystem haben wir in unserem Projekt für PostgreSQL entschieden.
+
+In unserer Datenbank erstellten wir eine Tabelle mit dem Namen \textitbf{service\_request} um die Service Requests von New York zu speichern.
+
+In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
+eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
+\footnote{https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv}
+
+Wir erstellten unsere Datenbanktabelle bzw. die Attribute der Service Requests Tabelle mit
+genau den gleichen Bezeichnern wie die des \ac{SODA} Datensatzes.
+
+Um den Consumer technisch umzusetzen benutzen wir die Programmiersprache Python wie auch weitere Bibliotheken um das Handling mit Apache Kafka
+und der Datenbank zu vereinfachen.
+Diese sind:
+
+\begin{itemize}
+  \item kafka-python
+  \item sqlalchemy
+  \item psycopg2 (wird von sqlalchemy benötigt)
+\end{itemize}
+
+Genau wie bei dem "Producer" abstrahiert das Framework \textitbf{kafka-python} die Verbindung zu unserem Apache Kafka Server und erleichtert den Zugriff auf das Topic.
+Durch den Einsatz von \textitbf{sqlalchemy} können wir auf die Datenbank und auf deren Tabelle in einer objektorientierten Weise zugreifen
+und müssen uns keine Gedanken über SQL Statements machen.
+
+\subsubsection{Quellcode}
+\label{subsub:quellcode_storage}
+Neben den verwendeten Bibliotheken besteht der \textitbf{Consumer} aus zwei Python Skripten.
+
+\begin{itemize}
+  \item DBHelper.py
+  \item consumer.py
+\end{itemize}
+
+Während sich das \textitbf{consumer} Skript um das Auslesen eines Kafka Topics kümmert ist der \textitbf{DBHelper}
+dafür zuständig die Verbindung zu der Datenbank aufzubauen, Tabellenspalten auszulesen und einen Datensatz in der Tabelle zu speichern.
+
+Nachfolgend das Consumer Skript.
+
+\lstinputlisting[language=Python]{../python/consumer.py}
+
+Sobald das Consumer Skript gestartet wird, wird eine Verbindung mit der Datenbank
+aufgebaut und der sog. KafkaConsumer stellt eine Verbindung mit dem Apache Kafka
+Server bzw. dem Topic "ServiceRequest" her.
+(Zeile 1 - 9)
+
+Sobald von seitens des Producers ein neuer Datensatz in das Topic "ServiceRequests" geschrieben wird,
+wird der Datensatz ausgelesen in ein \ac {JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
+und in ein temporäres Dictionary geschrieben.
+Dieses Dictionary wird abschließend mit Hilfe des DBHelper Skripts in die
+Datenbanktabelle geladen.
+(Zeile 11 - 18)
+
+Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes gleich
+und konnten sie somit als Schlüsselattribute für den jeweils anderen Datensatz benutzen.
+
+Mit diesem kleinen "Kniff" können wir jetzt mit Hilfe der Namen der Tabellenspalten
+auf die Keys des \ac{JSON} zugreifen den zugehörigen Wert auslesen und als neuen Wert für das temporäre Dictionary nutzen.
+(Zeile 14 - 16)

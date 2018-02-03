@@ -1,8 +1,18 @@
 \section{Data Ingestion}
 
-Wie schon in \fullref{chap:einleitung} erläutert haben wir uns dafür entschieden die Data Ingestion einmal mit einer statischen Quelle und einmal
-mit einem Data Stream zu realisieren.
-Dies wird in den zwei nachfolgenden Kapiteln detalliert erläutert.
+Wie schon in \fullref{chap:einleitung} erläutert haben wir uns dafür entschieden die NYC Open Data als Datenquelle zu nutzen.
+Genauer gesagt entschieden wir uns für den Datensatz mit dem Kürzel \textit{fhrw-4uyv}.
+Dieser Datensatz beinhält alle Service Request die seit 2011 von den Einwohner von New York City abgesetzt wurden sind.
+Beispielsweise kann mit diesem Datensatz herausgefunden werden wo welche Straßenlaternen in New Yor City ausgefallen sind
+oder in welchem Haus zu welcher Uhrzeit viel Party gemacht wurde da sich jemand über den Lärm beschwert hat.
+
+In unserem Projekt beschaffen wir die Daten einmal über eine \ac{CSV} Datei die man sich bei NYC Open Data runter laden kann
+und direkt über die \ac{SODA} \ac{API} die einen eigenen Endpunkt anbietet um Request für die verschiedenen Datensätze abzusetzen.
+Die Data Ingestion mit der \ac{CSV} Datei setzte Julian Ruppel mit der Programmiersprache Java um und
+den kontunierlichen Datenstrom über die Socrata \ac{API} wurde von Johannes Weber mit der Programmiersprache Python
+ausgelesen.
+
+Beide Ansätze werden in diesem Kapitel beschrieben und miteinander verglichen.
 
 \input{kapitel/unterkapitel/loesung/ingestion/csv}
 \input{kapitel/unterkapitel/loesung/ingestion/api}

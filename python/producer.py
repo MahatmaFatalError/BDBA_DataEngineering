@@ -1,4 +1,4 @@
-from KafkaHelper import BDBAProducer
+from kafka import KafkaProducer
 from SodaHelper import SodaConnector
 import random
 import time
@@ -16,7 +16,7 @@ tmp_date = to_date + datetime.timedelta(1)
 to_date = tmp_date.isoformat()
 soda = SodaConnector("data.cityofnewyork.us")
 topic = 'ServiceRequests'
-producer = BDBAProducer()
+producer = KafkaProducer()
 limit = 10000
 
 
@@ -29,11 +29,10 @@ def process():
         date = to_date
     for request in requests:
         print("Starting...")
-        print(request["created_date"])
         json_string = json.dumps(request)
         json_byte = b"" + json_string
-        producer.send_service_request(topic, json_byte)
-        # time.sleep(random.randint(0, 50) * 0.1)
+        producer.send(topic, json_byte)
+        time.sleep(random.randint(0, 50) * 0.1)
         print("Done...")
 
     return len(requests), date

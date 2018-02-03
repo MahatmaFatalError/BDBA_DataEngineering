@@ -1,3 +1,52 @@
 \subsection{Data Ingestion via \ac{SODA} Schnittstelle}
+Wie in \fullref{sec:arch} erläutert ist es die Aufgabe des Data Ingestion Prototyps zum einen Daten aus der externen Quelle auszulesen
+aber auch die Daten direkt an die Apache Kafka Plattform weiterzuleiten und in ein Topic zu speichern.
 
-Da muss was stehe
+Die Umsetzung des "Producers" erfolgte mit Python.
+Zusätzlich wurden folgende Frameworks benutzt um die Implementierung des \textit{producers} zu unterstützen:
+
+\begin{itemize}
+  \item sodapy
+  \item kafka-python
+\end{itemize}
+
+Sobald der \textit{producer} ausgeführt wird, wird der Nutzer gebeten ein Anfangs- und Enddatum anzugeben.
+In diesem Zeitfenster werden dann alle Datensätze abgefragt und in das Topic "ServiceRequests" von Apache Kafka geschrieben.
+
+\subsubsection{Quellcode}
+Der \textit{producer} besteht insgesamt aus zwei Python Skripten:
+
+\begin{itemize}
+  \item SodaHelper.py
+  \item producer.py
+\end{itemize}
+
+Das SodaHelper Skript ist ein separatzer Wrapper um die sodapy Bibliothek um die Verbindung zu der API herzustellen und die Daten zu holen.
+Somit wird eine klare Aufgabentrennung erreicht.
+Das Skript SodaHelper ist für die Verbindung zu der API zuständig und das producer Skript nur für die Weiterleitung der empfangenen Daten an Apache Kafka.
+
+Da es sich hierbei nicht um ein Live Stream handelt wie \zb{} bei Twitter API, haben wir uns dazu entschieden einen "Fake Stream" zu erstellen,
+indem nicht alle Daten sofort an Apache Kafka weitergeleitet werden sondern immer ein gewisser Abstand zwischen dem Senden der einzelnen Datensätze
+erzwungen wird.
+
+Unser ausgewählter Datensatz ist sehr groß. Wenn \zb{} der Nutzer Daten von einem Monat abrufen will kann es vorkommen, dass in diesem Zeitraum mehr als 100.000 Datensätze
+bereit zum Abruf stehen.
+Da der Abruf von einer solch großen Menge an Daten über die API eine sehr hohe Rechenleistung erfordert und diese im Rahmen des Projektes nicht zur Verfügung steht wurde
+eine Art \textit{Paging} entwickelt.
+Durch die feste Angabe eines Limits von 10.000 wird sichergestellt, dass ein Request an die \ac{SODA} \ac{API} nur maximal 10.000
+Datensätze liefern kann und durch einen entwickelten Algorithmus werden so lange Requests ausgeführt bis der gewünschte Zeitraum des Users komplett empfangen und
+die Request an Apache Kafka gesendet wurden.
+
+Vorgegeben durch das Framework \textit{kafka-python} können die Einträge eines Topics nur als byte String abgelegt werden.
+Aus diesem Grund wird der empfangende Datensatz zuerst in ein byte string umgewandelt bevor er an Apache Kafka gesendet wird.
+
+Folgendes Code Snippet zeigt den entwickelten Algorithmus um das Paging zu realisieren.
+Mit Hilfe des SodaHelpers werden zunächst die Datensätze von der API - unter Berücksichtigung des Limits, des Anfangs- und Enddatums geholt.
+Wie in dem Snippet zu erkennen wird die Variable \textit{limit} in dem Skript gesetzt.
+die Variablen \textit{from\_date} und \textit{to\_date} werden beim Starten des Skripts von dem User gesetzt.
+
+Der Algorithmus beruht auf der Annahme, dass wenn der empfangene Datensatz genau die Länge des Limits hat es immer noch weitere Datensätze gibt die von der API abgerufen werden müssen.
+Wenn also das Limit erreicht wurde wird das Datum des letzten Datensatzes als neues Enddatum festgelegt und der Prozess beginnt von vorne, solange die Anzahl der empfanenen Datensätze nicht mehr dem Limit entsprechen
+oder die verwendeten Anfangs- und Enddatumswerte identisch sind.
+
+\lstinputlisting[language=Python, firstline=20, lastline=45]{../python/producer.py}
