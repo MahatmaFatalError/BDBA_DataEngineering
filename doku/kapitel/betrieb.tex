@@ -1,5 +1,69 @@
 \chapter{Inbetriebnahme}
 \label{chap:betrieb}
-Inhalt:
-Was muss man machen damit unsere Programme zum Laufen gebracht werden können?
-Eigentlich der Inhalt der README.md
+In diesem Kapitel werden die einzelnen Schritte beschrieben, welche durchgeführt werden müssen um den Prototyp auf einem Windows Rechner ausführen zu können.
+
+\textbf{Hinweis:}
+\newline
+Hierbei handelt es sich lediglich um eine High-Level Beschreibung der Inbetriebnahme des Prototypen.
+Weitere Details zur Instalation und Nutzung der können den Quellen entnommen werden.
+\newline
+
+\section{Installation der benötigten Tools \& Frameworks}
+\begin{itemize}
+  \item Apache Kafka und Zookeeper installieren\footnote{\cite{Apache}}
+  \begin{itemize}
+    \item \textbf{Tipp:} Zur Installation unbedingt die \textit{binary} Version von Apache Kafka herunterladen
+  \end{itemize}
+  \item Apache Kafka Topic mit dem Namen \textitbf{ServiceRequests} erstellen\footnote{\cite{ApacheTopic}}
+  \item PostgreSQL installieren\footnote{\cite{PostgreSQL}}
+\end{itemize}
+
+Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgende Schtitte durchgeführt werden.
+\begin{itemize}
+  \item Python und pip installieren\footnote{\cite{Python}}
+  \item benötigte Python Bibliotheken installieren
+  \begin{itemize}
+    \item \shellcmd{pip install sodapy}
+    \item \shellcmd{pip install kafka-python}
+    \item \shellcmd{pip install psycopg2}
+    \item \shellcmd{pip install sqlalchemy}
+    \item \shellcmd{pip install jupyter}
+    \item \shellcmd{pip install bokeh}
+    \item \shellcmd{pip install ipython-sql}
+    \item \shellcmd{pip install gmaps}
+  \end{itemize}
+  \item \texttt{gmaps} Widget für Jupyter aktivieren
+  \begin{itemize}
+    \item \shellcmd{jupyter nbextension enable --py --sys-prefix widgetsnbextension}
+    \item \shellcmd{jupyter nbextension enable --py --sys-prefix gmaps}
+  \end{itemize}
+  \item Google Maps API Key erstellen um die Google Maps Visualisierungen nutzen zu können
+\end{itemize}
+
+Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgende Schtitte durchgeführt werden.
+\begin{itemize}
+  \item ... TODO ...
+\end{itemize}
+
+Abschließend kann das GitHub Repository mit unserem erstellten Quellcode via \shellcmd{git clone https://github.com/johannesweber/BDBA_DataEngineering.git}
+auf den Rechner kopiert werden.
+Falls noch kein git installiert wurde kann man es auch \hyperref[hier]{http://gitforwindows.org/} installieren oder das Repository als .zip Datei herunterladen
+
+Alle Daten die für die Ausführung des Java Quellcodes benötigt werden befindet sich in dem Ordner \textit{java}
+und alle Python Skripte im Ordner \textit{python}.
+
+Die Datei mit dem Namen \textit{BDBA\_DataEngineering.ipynb} ist das Jupyter Notebook, das benötigt wird um den Python Teil von Data Retrieval auszuführen
+und den Java Teil kann mmit dem Zeppelin Notebook XXX ausgeführt werden.
+Beide Notebooks befinden sich im Root Verzeichnis des Repositories.
+
+\section{Ausführung des Prototyps}
+\begin{itemize}
+  \item Zookeeper starten
+  \item Apache Kafka starten
+  \item Programm starten
+  \begin{itemize}
+    \item für Java: /java/Main.java
+    \item für Python: /python/main.py
+  \end{itemize}
+  \item Notebook starten und ausführen
+\end{itemize}
