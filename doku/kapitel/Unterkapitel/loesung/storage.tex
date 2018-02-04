@@ -49,7 +49,7 @@ Server bzw. dem Topic "ServiceRequest" her.
 (Zeile 1 - 9)
 
 Sobald von seitens des Producers ein neuer Datensatz in das Topic "ServiceRequests" geschrieben wird,
-wird der Datensatz ausgelesen in ein \ac {JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
+wird der Datensatz ausgelesen in ein \ac{JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
 und in ein temporäres Dictionary geschrieben.
 Dieses Dictionary wird abschließend mit Hilfe des DBHelper Skripts in die
 Datenbanktabelle geladen.
@@ -61,3 +61,5 @@ und konnten sie somit als Schlüsselattribute für den jeweils anderen Datensatz
 Mit diesem kleinen "Kniff" können wir jetzt mit Hilfe der Namen der Tabellenspalten
 auf die Keys des \ac{JSON} zugreifen den zugehörigen Wert auslesen und als neuen Wert für das temporäre Dictionary nutzen.
 (Zeile 14 - 16)
+
+Auch für den Consumer gibt es eine alternative Implementierung in Java. Diese findet sich in \code{com.srh.bdba.dataengineering.MyConsumer}. Der Programmablauf ist ähnlich zu der Python Implementierung, weshalb an dieser Stelle auf Codelistings im Anhang TODO verwiesen wird. Kurz zusammengefasst wird ein \code{KafkaConsumer<Long, String>} konfiguriert und pro 100 Millisekunden am Kafka-Cluster nachgefragt, ob es neue \code{ConsumerRecord <Long, String>} für das entsprechende Topic gibt. Falls dem so ist wird die \ac{JSON} Nachricht aus dem \code{ConsumerRecord<Long, String>} ausgepackt und per \code{PreparedStatement} über \code{JDBC} in die PostgreSQL Tabelle eingefügt.
