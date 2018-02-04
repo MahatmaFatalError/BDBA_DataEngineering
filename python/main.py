@@ -30,8 +30,8 @@ def main():
     handler = SignalHandler(stopper, threads)
     signal.signal(signal.SIGINT, handler)
 
-    consumer.start()
     producer.start()
+    consumer.start()
 
 
 if __name__ == '__main__':

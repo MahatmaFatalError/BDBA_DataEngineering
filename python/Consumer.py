@@ -13,7 +13,8 @@ class Consumer(threading.Thread):
         self.db_columns = self.db_helper.get_table_column_names(self.db_table)
 
     def run(self):
-        requests = KafkaConsumer("ServiceRequests", bootstrap_servers='localhost:9092') # auto_offset_reset='earliest'
+        requests = KafkaConsumer("ServiceRequests",
+                                 bootstrap_servers='localhost:9092')  # auto_offset_reset='earliest'
 
         for message in requests:
             db_entry = {}
@@ -21,5 +22,5 @@ class Consumer(threading.Thread):
             for column in self.db_columns:
                 if column in message_json:  # check if key is available in request object
                     db_entry[column] = message_json[column]
-
+            print("Saving in DB...")
             self.db_helper.insert(db_entry, self.db_table)

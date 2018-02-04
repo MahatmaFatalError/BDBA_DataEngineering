@@ -5,7 +5,7 @@ from bokeh.models import (
 )
 
 
-def plot_geo(self, lat_list, lon_list, notebook=False):
+def plot_geo(lat_list, lon_list, notebook=False):
     map_options = GMapOptions(lat=40.711724, lng=-74.011300, map_type="roadmap", zoom=11)
 
     plot = GMapPlot(x_range=Range1d(), y_range=Range1d(), map_options=map_options)
@@ -37,7 +37,7 @@ def plot_geo(self, lat_list, lon_list, notebook=False):
     show(plot)
 
 
-def plot_bar(self, x_values, y_values, notebook=False):
+def plot_bar(x_values, y_values, notebook=False):
     source = ColumnDataSource(data=dict(x_values=x_values, y_values=y_values))
 
     y_range_low = 0
@@ -59,7 +59,7 @@ def plot_bar(self, x_values, y_values, notebook=False):
     show(plot)
 
 
-def plot_time(self, x_values, y_values, notebook=False):
+def plot_time(x_values, y_values, notebook=False):
     # create a new plot with a datetime axis type
     plot = figure(plot_width=800, plot_height=250, x_axis_type="datetime")
 

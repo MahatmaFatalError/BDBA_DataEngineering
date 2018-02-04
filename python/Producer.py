@@ -17,29 +17,32 @@ class Producer(threading.Thread):
         self.from_date = from_date
         self.to_date = to_date
 
-    def fetch_data(self):
+    def fetch_data(self, from_date, to_date, limit):
         requests = self.soda.get_data(dataset_identifier="fhrw-4uyv",
-                                      from_date=self.from_date,
-                                      to_date=self.to_date,
-                                      limit=self.limit)
+                                      from_date=from_date,
+                                      to_date=to_date,
+                                      limit=limit)
         length = len(requests)
         if length > 0:
             date = requests[-1]["created_date"]
         else:
             date = self.to_date
         for request in requests:
-            print("Starting...")
             json_string = json.dumps(request)
             json_byte = b"" + json_string
+            print("Sending to Kafka...")
             self.producer.send(self.topic, json_byte)
             # time.sleep(random.randint(0, 50) * 0.1)
-            print("Done...")
 
         return len(requests), date
 
     def run(self):
-        number_of_entries, to_date = self.fetch_data()
-
+        number_of_entries, to_date = self.fetch_data(from_date=self.from_date,
+                                                     to_date=self.to_date,
+                                                     limit=self.limit)
         while number_of_entries == self.limit and to_date != self.from_date:
             print("Next Request...")
-            number_of_entries, to_date = self.fetch_data()
+            number_of_entries, to_date = self.fetch_data(from_date=self.from_date,
+                                                         to_date=to_date,
+                                                         limit=self.limit)
+        print("The End.")
