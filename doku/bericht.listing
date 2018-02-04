@@ -1,0 +1,3 @@
+\lstinputlisting[language=Java, firstline=35, lastline=67, label=listing:javacsvproducer,
+	captionpos=b,
+	caption=Auszug aus com.srh.bdba.dataengineering.MyProducer]{../java/src/main/java/com/srh/bdba/dataengineering/MyProducer.java}
