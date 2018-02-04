@@ -2,8 +2,10 @@
 \label{sec:arch}
 Grundsätzlich lassen sich zwei unterschiedliche Architekturansätze im Bereich Data Streaming unterscheiden:
 
+
+
 \begin{description}
-\item [Lambda Architektur:] Benannt nach dem griechischen ($\lambda$) zeichnet sich dieser Ansatz dadurch aus, dass die Streaming Daten zweigleisig verarbeitet werden. Zum einen wird der Datenstrom direkt in einen häufig auf In-Memory Technologie basierenden \textit{Speed Layer} geleitet, der diese in Echtzeit verarbeitet und dem \textit{Serving Layer} zur Verfügung stellt. Da Streams per Definition unendlich und der Speed Layer teuer und physikalisch endlich ist, wird der Stream von \textit{Ingestion Layer} parallel in den \textit{Batch Layer} geleitet. Dieser speichert zunächst die Daten persistent und startet nach einem fest definierten Intervall einen Batch-Job um die bis dahin angelaufenen Daten zu verarbeiten und zum Serving Layer zu übertragen. Es ist also die nicht zu unterschätzende  Verantwortung des Serving Layers, die aggregierten Bestandsdaten aus dem Batch Layer mit den Echtzeitdaten des Speed Layers, die noch nicht vom Batch Layer verarbeitet worden sind, abzumischen.
+\item [Lambda Architektur:] Benannt nach dem griechischen $\lambda$ zeichnet sich dieser Ansatz dadurch aus, dass die Streaming Daten zweigleisig verarbeitet werden. Zum einen wird der Datenstrom direkt in einen häufig auf In-Memory Technologie basierenden \textit{Speed Layer} geleitet, der diese in Echtzeit verarbeitet und dem \textit{Serving Layer} zur Verfügung stellt. Da Streams per Definition unendlich und der Speed Layer teuer und physikalisch endlich ist, wird der Stream von \textit{Ingestion Layer} parallel in den \textit{Batch Layer} geleitet. Dieser speichert zunächst die Daten persistent und startet nach einem fest definierten Intervall einen Batch-Job um die bis dahin angelaufenen Daten zu verarbeiten und zum Serving Layer zu übertragen. Es ist also die nicht zu unterschätzende  Verantwortung des Serving Layers, die aggregierten Bestandsdaten aus dem Batch Layer mit den Echtzeitdaten des Speed Layers, die noch nicht vom Batch Layer verarbeitet worden sind, abzumischen.
 
 \begin{figure}[h]
 	\centering
@@ -13,11 +15,29 @@ Grundsätzlich lassen sich zwei unterschiedliche Architekturansätze im Bereich 
 \end{figure}
 
 
-\item [Kappa Architektur:]
+\item [Kappa Architektur:] Dieser von Confluent Mitgründer und CEO Jay Kreps entworfene Ansatz verzichtet auf eine Batch-Verarbeitung und kommt somit mit lediglich mit \textit{Ingestion-}, \textit{Speed-} und \textit{Serving-Layer} aus. Damit spart man sich Entwicklung und Betrieb von zwei separaten Schichten und das aufwändige Abmischen von Batch-Daten mit Live-Daten im \textit{Serving-Layer}. Voraussetzung ist allerdings, dass der \textit{Ingestion-Layer} nicht nur Daten volatil durchreicht sondern vielmehr als \textbf{Puffer} die Rohdaten persistent im \textit{Master-Dataset} vorhält, um im Falle einer neuen, noch nicht vorberechneten Anfrage oder Änderung im \textit{Speed-Layer} die Rohdaten erneut bereit zu stellen. Um ein korrektes Replay der Nachrichten sicherzustellen beruht der Puffer auf einem kanonisches Log, in dem lediglich Nachrichten unverändert hinzugefügt, aber bereits gespeicherte Nachrichten nicht mehr verändert oder in ihrer Reihenfolge verschoben werden können. Um gleichzeitig Nähe als auch Abgrenzung zur $\lambda$ Architektur zu veranschaulichen wurde dieser Ansatz nach dem griechischen $\kappa$ benannt.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{berle_lambda-architektur_4.jpg}
+	\caption[Schema der $\kappa$ Architektur]{Schema der $\kappa$ Architektur\citep{TODO}}
+	\label{fig:KappaArchitecture}
+\end{figure}
 
 \end{description}
 
+Der erste Lösungsentwurf für unser Problem orientiert sich an der Lambda Architektur. Weil die von uns gewählte Datenquelle kein Stream sondern ein statisches, online abrufbares Datenset ist, sieht unser Lösungsansatz vor, mittels eines Kafka Producers \textbf{(1)} die Online-Daten zu laden und sukzessive in einen Kafka Topic zu schreiben, um somit eine Art Pseudo-Stream zu imitieren. Da das Web-API ohnehin \textit{Paging} über das Datenset erlaubt sollte die Implementierung nicht sonderlich kompliziert sein.
 
+In Schritt \textbf{(2)} sammelt ein Consumer zeitgesteuert die Nachrichten des Kafka Topics ein und schreibt die Daten per SQL INSERT \footnote{Um die IO-Last der Datenbankverbindung gering zu halten sollte die Daten per BULK-INSERT erfolgen} in eine relationale Datenbanktabelle. Auf dieser Tabelle horcht ein AFTER INSERT TRIGGER \textbf{(3)}, der, sobald Daten in die Tabelle geschrieben wird, eine FUNCTION bzw. STORED PROCEDURE aufruft um Aggregate über die neuen Datensätze zu berechnen und in einer separaten Tabelle abzuspeichern bzw. mit bereits bestehenden Aggregaten zu verrechnen. Danach kann die Tabelle mit den Rohdaten theoretisch geleert werden, spätestens jedoch sobald der verfügbare Speicherplatz zu neige geht\footnote{Alternativ könnte man einen INSTEAD OF TRIGGER benutzen und ausschließlich Aggregate permanent zu speichern}.
+
+Parallel dazu konsumiert ein in Zeppelin- oder Jupyter-Notebook eingebetteter Consumer\footnote{Apache Spark liefert bereits eine Kafka-Consumer Bibliothek} die Rohdaten aus dem gleichn Topic \textbf{(4)}. Somit wären im Auswertungs-Dashboard \textbf{(5)} sowohl Charting auf Live-Daten als auch über aggregierte Bestandsdaten aus PostgreSQL, die ggf. aus Speicherplatzgründen gar nicht mehr in Kafka vorgehalten werden können, möglich.
+
+\begin{figure}[h] %http://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
+	\centering
+	\includegraphics[width=\linewidth]{Overview_lampda.pdf}
+	\caption[Lösungsentwurf nach $\lambda$]{Lösungsentwurf nach $\lambda$}
+	\label{fig:OurLampdaArchitecture}
+\end{figure}
 
 %Warum Kappa? Daten sind endlich aber ausreichend für unsere Bedürfnisse.Haben eh nur Pseudostream.
 
