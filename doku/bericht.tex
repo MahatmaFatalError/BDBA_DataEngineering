@@ -54,14 +54,13 @@
 \pagenumbering{roman}
 \setcounter{page}{\value{frontmatterpage}}
 
+% Abkürzungsverzeichnis
+\input{config/abkuerzungen}
+
 % Abbildungsverzeichnis erzeugen
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 \listoffigures
-
-% Abkürzungsverzeichnis
-\cleardoublepage
-\input{config/abkuerzungen}
 
 \end{document}
