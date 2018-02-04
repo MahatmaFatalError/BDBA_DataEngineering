@@ -26,7 +26,7 @@ public class MyProducer implements Runnable {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	
-	String filepath;
+	private final String filepath;
 	
 	public MyProducer(String filepath) {
 		this.filepath = filepath;
