@@ -3,8 +3,8 @@ Als offline-fähige Alternative zur \ac{SODA} API gibt es einen weiteren Kafka P
 
 Der Programmablauf lässt sich in wenigen Stichpunkten beschreiben:
 \begin{enumerate}
-	\item Verbindung des Kafka Producers zum Kafka Cluster konfigurieren. Dazu zählen hauptsächlich Host und Port sowie die Datentypen, um Schlüssel und Wert der Nachrichten zu serialisieren.  
-	\item Zeilenweises einlesen der \ac{CSV} Datei und dabei jeweils den Datensatz in einen \ac{JSON}-String transformieren, diesen \code{String} als Wert in einen \code{ProducerRecord} setzen und an den bestimmten Kafka Topic senden. Um einen realen Stream zu simulieren wartet der Producer-Thread pro verarbeiteten Datensatz eine zufällige Wartezeit zwischen 0 bis 2 Sekunden.
+	\item Verbindung des \code{KafkaProducer<Long, String>} zum Kafka Cluster konfigurieren. Dazu zählen hauptsächlich Host und Port sowie die Datentypen, um Schlüssel und Wert der Nachrichten zu serialisieren.  
+	\item Zeilenweises einlesen der \ac{CSV} Datei und dabei jeweils den Datensatz in einen \ac{JSON}-String transformieren, diesen \code{String} als Wert in einen \code{ProducerRecord<Long, String>} setzen und an den bestimmten Kafka Topic senden. Um einen realen Stream zu simulieren wartet der Producer-Thread pro verarbeiteten Datensatz eine zufällige Wartezeit zwischen 0 bis 2 Sekunden.
 \end{enumerate}
 
 Listing \ref{listing:javacsvproducer} zeigt einen Überblick über die relevanten Methoden.
