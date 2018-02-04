@@ -46,6 +46,7 @@ cleardoublepage=plain]{scrbook}
 \usepackage{graphics}
 \usepackage{wrapfig}              % Grafiken umfließen den Text
 \usepackage{caption}
+\usepackage[listings,skins]{tcolorbox}
 
 \bibliography{config/literatur.bib}   % BibTeX-Datei mit Literaturquellen einbinden
 
@@ -176,3 +177,6 @@ cleardoublepage=plain]{scrbook}
 
 %diverse Variablen um das Schreiben einfacher zu gestalten
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} - \textit{\nameref*{#1}}}}
+
+% format text like code
+\newcommand{\code}[1]{\texttt{#1}}
