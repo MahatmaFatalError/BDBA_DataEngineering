@@ -1,27 +1,50 @@
 \chapter{Inbetriebnahme}
 \label{chap:betrieb}
-In diesem Kapitel werden die einzelnen Schritte beschrieben, welche durchgeführt werden müssen um den Prototyp auf einem Windows Rechner ausführen zu können.
+In diesem Kapitel werden die einzelnen Schritte beschrieben, welche durchgeführt werden müssen um den Prototyp ausführen zu können.
 
 \textbf{Hinweis:}
 \newline
-Hierbei handelt es sich lediglich um eine High-Level Beschreibung der Inbetriebnahme des Prototypen.
-Weitere Details zur Instalation und Nutzung können den Quellen entnommen werden.
-\newline
+Hierbei handelt es sich lediglich um eine grob-granulare Beschreibung der Inbetriebnahme des Prototypen. Weitere Details zur Installation und Nutzung können den Quellen entnommen werden.
 
-\section{Installation der benötigten Tools \& Frameworks}
+\section{Voraussetzung \& Infrastruktur}
+\subsection{Installation}
+Folgende Komponente \underline{müssen}  installiert und lauffähig sein:
 \begin{itemize}
-  \item Apache Kafka und Zookeeper installieren\autocite{Kafka}
-  %\begin{itemize}
-  %  \item \textbf{Tipp:} Zur Installation unbedingt die \textit{binary} Version von Apache Kafka herunterladen
-  %\end{itemize}
-  \item Apache Kafka Topic mit dem Namen \textitbf{ServiceRequests} erstellen\autocite{KafkaTopic}
-  \item PostgreSQL installieren\autocite{PostgreSQL}
+  \item Apache Kafka und Apache Zookeeper
+  %\item Apache Kafka Topic mit dem Namen \textitbf{ServiceRequests} erstellen\autocite{KafkaTopic}
+  \item PostgreSQL
 \end{itemize}
 
-Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgende Schritte durchgeführt werden.
-\begin{itemize}
-  \item Python und pip installieren\autocite{Python}
-  \item benötigte Python Bibliotheken installieren
+
+Je nachdem welche Technologie man für die Consumer, Producer und Auswertung verwenden möchte ergeben sich folgende zwei \underline{alternative} Technologiestacks:
+
+\begin{multicols}{2}
+	\begin{itemize}
+		\item Python 2
+		\item pip
+		\item Jupyter
+	\end{itemize}
+\columnbreak
+	\begin{itemize}
+		\item JDK 1.8
+		\item Maven
+		\item Apache Zeppelin
+	\end{itemize}
+\end{multicols}
+
+\section{Infrastruktur Setup \& Konfiguration}
+\begin{enumerate}
+	\item Projekt aus Git Repository\footnote{\hyperref[hier]{https://github.com/johannesweber/BDBA\_DataEngineering.git}} auschecken
+	\item Apache Zookeeper starten und initialisieren
+	\item Apache Kafka starten und initialisieren
+	\item Kafka Topic anlegen
+	\item PostgreSQL Datenbankschema initialisieren\footnote{DDL Skripte um das Datenbankschema in PostgreSQL aufzubauen befinden sich im Ordner /DB}
+\end{enumerate}
+
+\section{Setup und Starten des Python Prototypen }
+
+\begin{enumerate}
+  \item Python Bibliotheken installieren
   \begin{itemize}
     \item \shellcmd{pip install sodapy}
     \item \shellcmd{pip install kafka-python}
@@ -39,47 +62,18 @@ Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgend
   \end{itemize}
   \item Google Maps API Key erstellen um die Google Maps Visualisierungen nutzen zu können
   \item Applikation Token für die \ac{SODA} \ac{API} beziehen\autocite{AppToken}
-\end{itemize}
+  \item Python Konfigurationsdatei \texttt{/python/config.py} pflegen
+  \item Python Consumer und Producer starten via \texttt{/python/main.py}
+  \item Jupyter starten und vorkonfiguriertes Notebook BDBA/DataEngineering.ipynb laden
+\end{enumerate}
 
-Für die Durchführung des Prototyps mit Java müssen zusätzlich folgende Komponenten installiert werden.
-\begin{itemize}
-  \item JDK 1.8
-  \item Apache Maven > 3.X
-  \item Apache Zeppelin
-\end{itemize}
+\section{Setup und Starten des Java Prototypen }
 
-Abschließend kann unser GitHub Repository via \shellcmd{git clone https://github.com/johannesweber/BDBA_DataEngineering.git}
-auf den Rechner kopiert werden.
-Falls kein git installiert wurde kann man es auch \hyperref[hier]{http://gitforwindows.org/} installieren oder das Repository als .zip Datei herunterladen.
-
-Alle Daten die für die Ausführung des Java Quellcodes benötigt werden befindet sich in dem Ordner \textit{java}
-und alle Python Skripte im Ordner \textit{python}.
-
-In dem Ordner \texttt{db} befinden sich das DDL Skript um die Datenbanktabelle in PostgreSQL aufzubauen.
-
-Zusätzlich muss noch die Konfiguration des Programms angepasst werden.
-Für Python befindet sich die Konfigurationsdatei in \texttt{\\python\\config.py} und für Java in XXX.
-
-Die Datei mit dem Namen \textit{BDBA\_DataEngineering.ipynb} ist das Jupyter Notebook, das benötigt wird um den Python Teil von Data Retrieval auszuführen
-und den Java Teil kann mit dem Zeppelin Notebook XXX ausgeführt werden.
-Beide Notebooks befinden sich im Root Verzeichnis des Repositories.
-
-\section{Konfiguration der Infrastruktur}
-Sobald man das Git-Repository gecloned hat kann man das die Java Quelldateien als Maven Projekt in einer beliebigen IDE öffnen und die Konfiguration der Verbindung zum Kakfka Cluster samt Topic in \code{com.srh.bdba.dataengineering.KafkaCommons} anpassen. Standardmäßig ist localhost und Kafka Standardport sowie der oben genannte Topic ServiceRequests eingestellt.
-
-
-\section{Ausführung des Prototyps}
-\begin{itemize}
-  \item Zookeeper starten
-  \item Apache Kafka starten
-  \item Programm starten
-  \begin{itemize}
-    \item für Java: /java/Main.java
-    \item für Python: /python/main.py
-  \end{itemize}
-  \item Notebook starten und die Notebook Datei hochladen.
-  \begin{itemize}
-    \item für Java: XXX
-    \item für Python: BDBA\_DataEngineering.ipynb
-  \end{itemize}
-\end{itemize}
+\begin{enumerate}
+	\item CSV Datei von \hyperref[hier]{https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9} runterladen und lokal speichern
+	\item Java Projekt mit Maven bauen
+	\item Konfiguration \texttt{/java/src/main/resources/kafka\_config.properties} pflegen
+	\item Python Consumer und Producer starten via \texttt{com.srh.bdba.dataengineering.Main}. Beim Aufruf der \texttt{Main()} muss man den Pfad zur CSV Datei angeben.
+	\item Apache Zeppelin starten und Datenbankverbindung sowie JDBC Treiber im PSQL Interpreter pflegen
+	\item Vorkonfiguriertes Notebook BDBA/TODO laden
+\end{enumerate}
