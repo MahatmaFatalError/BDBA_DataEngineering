@@ -11,9 +11,9 @@ Weitere Details zur Instalation und Nutzung können den Quellen entnommen werden
 \section{Installation der benötigten Tools \& Frameworks}
 \begin{itemize}
   \item Apache Kafka und Zookeeper installieren\autocite{Kafka}
-  \begin{itemize}
-    \item \textbf{Tipp:} Zur Installation unbedingt die \textit{binary} Version von Apache Kafka herunterladen
-  \end{itemize}
+  %\begin{itemize}
+  %  \item \textbf{Tipp:} Zur Installation unbedingt die \textit{binary} Version von Apache Kafka herunterladen
+  %\end{itemize}
   \item Apache Kafka Topic mit dem Namen \textitbf{ServiceRequests} erstellen\autocite{KafkaTopic}
   \item PostgreSQL installieren\autocite{PostgreSQL}
 \end{itemize}
@@ -41,9 +41,11 @@ Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgend
   \item Applikation Token für die \ac{SODA} \ac{API} beziehen\autocite{AppToken}
 \end{itemize}
 
-Für die Durchführung des Prototyps mit Java müssen zusätzlich folgende Schritte durchgeführt werden.
+Für die Durchführung des Prototyps mit Java müssen zusätzlich folgende Komponenten installiert werden.
 \begin{itemize}
-  \item ... TODO ...
+  \item JDK 1.8
+  \item Apache Maven > 3.X
+  \item Apache Zeppelin
 \end{itemize}
 
 Abschließend kann unser GitHub Repository via \shellcmd{git clone https://github.com/johannesweber/BDBA_DataEngineering.git}
@@ -53,14 +55,18 @@ Falls kein git installiert wurde kann man es auch \hyperref[hier]{http://gitforw
 Alle Daten die für die Ausführung des Java Quellcodes benötigt werden befindet sich in dem Ordner \textit{java}
 und alle Python Skripte im Ordner \textit{python}.
 
-In dem Ordner \texttt{db} befinden sich die SQL Skripts um die Datenbank und die Datenbanktabelle aufzubauen.
+In dem Ordner \texttt{db} befinden sich das DDL Skript um die Datenbanktabelle in PostgreSQL aufzubauen.
 
 Zusätzlich muss noch die Konfiguration des Programms angepasst werden.
 Für Python befindet sich die Konfigurationsdatei in \texttt{\\python\\config.py} und für Java in XXX.
 
 Die Datei mit dem Namen \textit{BDBA\_DataEngineering.ipynb} ist das Jupyter Notebook, das benötigt wird um den Python Teil von Data Retrieval auszuführen
-und den Java Teil kann mmit dem Zeppelin Notebook XXX ausgeführt werden.
+und den Java Teil kann mit dem Zeppelin Notebook XXX ausgeführt werden.
 Beide Notebooks befinden sich im Root Verzeichnis des Repositories.
+
+\section{Konfiguration der Infrastruktur}
+Sobald man das Git-Repository gecloned hat kann man das die Java Quelldateien als Maven Projekt in einer beliebigen IDE öffnen und die Konfiguration der Verbindung zum Kakfka Cluster samt Topic in \code{com.srh.bdba.dataengineering.KafkaCommons} anpassen. Standardmäßig ist localhost und Kafka Standardport sowie der oben genannte Topic ServiceRequests eingestellt.
+
 
 \section{Ausführung des Prototyps}
 \begin{itemize}
