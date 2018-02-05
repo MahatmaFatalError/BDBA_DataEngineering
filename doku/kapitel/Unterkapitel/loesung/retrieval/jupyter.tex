@@ -1,2 +1,50 @@
 \subsection{Data Retrieval mit Jupyter}
-Die Aufgabe im Bereich Data Retrieval war es die zum einen die Daten aus der Datenbank auszulesen
+Das Jupyter Notebook bietet die Möglichkeit mit \textit{Magic-Commands} direkt aus dem Notebook heraus
+eine Verbindung mit der Datenbank aufzubauen, \ac{SQL} Statements abzusetzen.
+Einfache Tabellen werden direkt in dem Notebook visualisiert wohingegen Visualisierungen wie \zb
+Balkendiagramme oder Geo Plots mit Python Bibliotheken dargestellt werden müssen.
+Dafür müssen in Jupyter sog. \textit{Widgets} erstellt bzw. installiert werden.
+
+Folgende Python Bibliotheken müssen noch installiert werden um die \ac{SQL} Statements in Jupyter ausführen und visualisieren zu können.
+\begin{itemize}
+  \item ipython-sql
+  \item bokeh
+  \item gmaps
+\end{itemize}
+
+Mit \textitbf{ipython-sql} werden das \%sql \textit{Magic-Command} in Jupyter aktiviert.
+\textitbf{ipython-sql} nutzt \textitbf{sqlalchemy} um sich mit der Datenbaank zu verbinden.
+Ein abgesetztes \ac{SQL} Statement lässt sich entweder direkt in Jupyter ausgeben
+oder einer beliebigen Variable zuordnen die man dann weiterverarbeiten kann.
+
+ \textitbf{bokeh} ist eine sehr mächtige Python Bibliothek um viele Arten der Visualisierung umzusetzen
+ wie \zb Balkendiagramme, Scatter Plots, Geo Maps oder Zeitreihen.
+
+ Die Visualisierung von Geo Daten erfolgt mit der Bibliothek \textitbf{gmaps}.
+ Diese greift auf die Karten von Google Maps zu erlaubt es die Geo Daten in einem Layer über einen
+ beliebigen Kartenausschnitt zu legen.
+ Der Vorteil von \textitbf{gmaps} gegenüber \textitbf{bokeh} ist
+ zum einen die Nutzung des Kartenmaterials von Google aber auch die interaktive Nutzung
+ des Kartenauschnitts mit \zb StreetView
+
+
+Im Rahmen von Data Retrieval wurden mehrere Fragestellungen über den Datensatz beantwortet.
+Nachfolgend eine Auflistung aller Fragestellungen und den dazugehörigen \ac{SQL} Statements.
+
+% TODO Bilder einfügen
+
+\textbf{Wieviel Beschwerdetypen gibt es die häufiger als 400 aber seltener als 8000 Mal gemeldet wurden?}
+\newline
+\sql{SELECT complaint\_type, COUNT(complaint\_type) FROM service\_request GROUP BY complaint\_type HAVING COUNT(complaint\_type) > 400 AND COUNT(complaint\_type) < 8000}
+
+\textbf{Wie lautet die Beschreibung der häufig vorkommenden Service Requests?}
+\newline
+\sql{SELECT descriptor, COUNT(descriptor) FROM service_request GROUP BY descriptor HAVING count(descriptor) > 8}
+
+\textbf{Welche Orte von New York City wurde Service Request vom Typ 'Noise - Residential' abgesetzt?}
+\newline
+\sql{SELECT longitude, latitude FROM service_request WHERE complaint_type = 'Noise - Residential' and latitude IS NOT NULL and longitude IS NOT NULL}
+
+\textbf{Wieviele Service Requests sind im Jahr 2017 aufetreten? Gruppirt nach Tag und sortiert nach dem Erstellungsdatum}
+\newline
+\sql{SELECT date_trunc('day', created_date) AS dd, COUNT(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)}
