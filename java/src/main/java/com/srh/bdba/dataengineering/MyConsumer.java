@@ -1,5 +1,6 @@
 package com.srh.bdba.dataengineering;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLType;
@@ -39,8 +40,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class MyConsumer implements Runnable {
 
-	private static final String TARGET_TABLE = "service_request";
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final String targetTable;
+	private final String postgresPW;
+	private final String postgresUser;
+	private final String postgresUrl;
+
+	public MyConsumer(){
+		postgresPW = "postgres";
+		postgresUser = "postgres";
+		postgresUrl = "127.0.0.1:5432/bdba";
+		targetTable = "service_request";
+	}
+
+	/**
+	 *
+	 * @param dbURL
+	 * @param tableName
+	 * @param dbUser
+	 * @param dbPassword
+	 */
+	public MyConsumer(String dbURL, String tableName, String dbUser, String dbPassword){
+		this.postgresUrl = dbURL;
+		this.targetTable = tableName;
+		this.postgresUser = dbUser;
+		this.postgresPW = dbPassword;
+	}
+
 
 	public static void main(String[] args) throws Exception {
 		new MyConsumer().runConsumer();
@@ -50,10 +76,10 @@ public class MyConsumer implements Runnable {
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
 
 		JdbcTemplate template = getJdbcTemplate();
-		final List<String> tableColumns = findColumnsOfTable(template, TARGET_TABLE);
+		final List<String> tableColumns = findColumnsOfTable(template, targetTable);
 
 		try (final Consumer<Long, String> consumer = createConsumer()) {
-			List<String> topics = Arrays.asList(new String[] { KafkaCommons.TOPIC });
+			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("TOPIC", KafkaCommons.TOPIC)});
 			consumer.subscribe(topics);
 
 			while (true) {
@@ -120,7 +146,7 @@ public class MyConsumer implements Runnable {
 		columns = "created_date,agency_name,complaint_type,descriptor,longitude,latitude,agency";
 		placeholders = "?,?,?,?,?,?,?";
 
-		String sql = "INSERT INTO " + TARGET_TABLE + "( " + columns + ") values (" + placeholders + ")";
+		String sql = "INSERT INTO " + targetTable + "( " + columns + ") values (" + placeholders + ")";
 		return sql;
 	}
 
@@ -134,16 +160,16 @@ public class MyConsumer implements Runnable {
 	private JdbcTemplate getJdbcTemplate() {
 		SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriver(new org.postgresql.Driver());
-		ds.setUrl("jdbc:postgresql://localhost:5432/bdba");
-		ds.setUsername("postgres");
-		ds.setPassword("postgres");
+		ds.setUrl("jdbc:postgresql://" + postgresUrl);
+		ds.setUsername(postgresUser);
+		ds.setPassword(postgresPW);
 
 		return new JdbcTemplate(ds);
 	}
 
-	private Consumer<Long, String> createConsumer() {
+	private Consumer<Long, String> createConsumer() throws IOException{
 		Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.BOOTSTRAP_SERVERS);
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
