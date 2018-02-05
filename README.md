@@ -62,6 +62,22 @@
 
 ...
 
+# SQL Statements
+
+``` sql
+select complaint_type, count(complaint_type) from service_request group by complaint_type having count(complaint_type) > 400 and count(complaint_type) < 8000
+```
+``` sql
+select descriptor, count(descriptor) from service_request group by descriptor having count(descriptor) > 8
+```
+``` sql
+SELECT longitude, latitude from service_request where complaint_type = 'Noise - Residential' and latitude is not null and longitude is not null
+```
+``` sql
+SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)
+```
+noch ein Statement für alle offenen und geschlossenen Request
+
 # **Themen**
 
 ## Tools & Frameworks
