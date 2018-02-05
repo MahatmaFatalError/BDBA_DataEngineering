@@ -1,5 +1,6 @@
 from python.plot_util import plot_bar, plot_geo, plot_time
 from python.DBHelper import DBHelper
+import config
 
 
 db = DBHelper("bdba")
@@ -7,7 +8,7 @@ count = 0
 lon_list = []
 lat_list = []
 
-results = db.select_all_entries_where(table_name="service_request", key="borough", value="BROOKLYN")
+results = db.select_all_entries_where(table_name=config.TABLE_NAME, key="borough", value="BROOKLYN")
 
 for result in results:
     lat_list.append(result["latitude"])

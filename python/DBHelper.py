@@ -1,13 +1,13 @@
-# postgreSQL credentials: weber.johanes@gmail.com; test#123
 import sqlalchemy
+import config
 
 
 class DBHelper:
 
     def __init__(self, database):
-        self.connect('postgres', 'test#123', database)
+        self.connect(config.DATABASE_USER, config.DATABASE_PW, database)
 
-    def connect(self, user, password, db, host='localhost', port=5432):
+    def connect(self, user, password, db, host=config.DATABASE_HOST, port=config.DATABASE_PORT):
         # We connect with the help of the PostgreSQL URL
         # postgresql://federer:grandestslam@localhost:5432/tennis
         url = 'postgresql://{}:{}@{}:{}/{}'
@@ -32,8 +32,7 @@ class DBHelper:
         table = self.meta.tables[table_name]
         table_names = []
         for column in table.c:
-            if column.key != 'id':
-                table_names.append(column.key)
+            table_names.append(column.key)
         return table_names
 
     def select_all_entries_where(self, table_name, key, value):

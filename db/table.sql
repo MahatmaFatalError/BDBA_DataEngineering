@@ -4,8 +4,7 @@
 
 CREATE TABLE public.service_request
 (
-    id bigserial NOT NULL,    
-	created_date timestamp with time zone,
+    created_date timestamp with time zone,
     agency_name character(255) COLLATE pg_catalog."default",
     complaint_type character(255) COLLATE pg_catalog."default",
     descriptor character(255) COLLATE pg_catalog."default",
@@ -24,7 +23,8 @@ CREATE TABLE public.service_request
     due_date timestamp with time zone,
     borough character(100) COLLATE pg_catalog."default",
     resolution_description text COLLATE pg_catalog."default",
-    CONSTRAINT pk_id PRIMARY KEY (id)
+    unique_key character(255) COLLATE pg_catalog."default",
+    CONSTRAINT service_request_unique_key_key UNIQUE (unique_key)
 )
 WITH (
     OIDS = FALSE

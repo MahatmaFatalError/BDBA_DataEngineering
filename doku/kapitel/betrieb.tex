@@ -38,19 +38,25 @@ Für die Durchführung des Prototyps mit Python müssen zusätzlich noch folgend
     \item \shellcmd{jupyter nbextension enable --py --sys-prefix gmaps}
   \end{itemize}
   \item Google Maps API Key erstellen um die Google Maps Visualisierungen nutzen zu können
+  \item Applikation Token für die \ac{SODA} \ac{API} beziehen\autocite{AppToken}
 \end{itemize}
 
-Für die Durchführung des Prototyps mit Java müssen zusätzlich noch folgende Schritte durchgeführt werden.
+Für die Durchführung des Prototyps mit Java müssen zusätzlich folgende Schritte durchgeführt werden.
 \begin{itemize}
   \item ... TODO ...
 \end{itemize}
 
-Abschließend kann das GitHub Repository mit unserem erstellten Quellcode via \shellcmd{git clone https://github.com/johannesweber/BDBA_DataEngineering.git}
+Abschließend kann unser GitHub Repository via \shellcmd{git clone https://github.com/johannesweber/BDBA_DataEngineering.git}
 auf den Rechner kopiert werden.
-Falls noch kein git installiert wurde kann man es auch \hyperref[hier]{http://gitforwindows.org/} installieren oder das Repository als .zip Datei herunterladen
+Falls kein git installiert wurde kann man es auch \hyperref[hier]{http://gitforwindows.org/} installieren oder das Repository als .zip Datei herunterladen.
 
 Alle Daten die für die Ausführung des Java Quellcodes benötigt werden befindet sich in dem Ordner \textit{java}
 und alle Python Skripte im Ordner \textit{python}.
+
+In dem Ordner \texttt{db} befinden sich die SQL Skripts um die Datenbank und die Datenbanktabelle aufzubauen.
+
+Zusätzlich muss noch die Konfiguration des Programms angepasst werden.
+Für Python befindet sich die Konfigurationsdatei in \texttt{\\python\\config.py} und für Java in XXX.
 
 Die Datei mit dem Namen \textit{BDBA\_DataEngineering.ipynb} ist das Jupyter Notebook, das benötigt wird um den Python Teil von Data Retrieval auszuführen
 und den Java Teil kann mmit dem Zeppelin Notebook XXX ausgeführt werden.
@@ -65,7 +71,7 @@ Beide Notebooks befinden sich im Root Verzeichnis des Repositories.
     \item für Java: /java/Main.java
     \item für Python: /python/main.py
   \end{itemize}
-  \item Notebook starten und ausführen
+  \item Notebook starten und die Notebook Datei hochladen.
   \begin{itemize}
     \item für Java: XXX
     \item für Python: BDBA\_DataEngineering.ipynb

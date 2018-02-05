@@ -1,24 +1,27 @@
+from distutils.command.config import config
+
 from kafka import KafkaProducer
 from SodaHelper import SodaConnector
 import threading
 import random
 import time
 import json
+import config
 
 
 class Producer(threading.Thread):
 
     def __init__(self, from_date, to_date):
         super(Producer, self).__init__()
-        self.soda = SodaConnector("data.cityofnewyork.us")
-        self.topic = 'ServiceRequests'
+        self.soda = SodaConnector(config.SODA_DOMAIN)
+        self.topic = config.KAFKA_TOPIC
         self.producer = KafkaProducer()
         self.limit = 10000
         self.from_date = from_date
         self.to_date = to_date
 
     def fetch_data(self, from_date, to_date, limit):
-        requests = self.soda.get_data(dataset_identifier="fhrw-4uyv",
+        requests = self.soda.get_data(dataset_identifier=config.SODA_DATASET,
                                       from_date=from_date,
                                       to_date=to_date,
                                       limit=limit)

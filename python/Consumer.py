@@ -2,19 +2,20 @@ from kafka import KafkaConsumer
 from DBHelper import DBHelper
 import json
 import threading
+import config
 
 
 class Consumer(threading.Thread):
 
     def __init__(self):
         super(Consumer, self).__init__()
-        self.db_table = 'service_request'
-        self.db_helper = DBHelper('bdba')
+        self.db_table = config.TABLE_NAME
+        self.db_helper = DBHelper(config.DATABASE_NAME)
         self.db_columns = self.db_helper.get_table_column_names(self.db_table)
 
     def run(self):
-        requests = KafkaConsumer("ServiceRequests",
-                                 bootstrap_servers='localhost:9092')  # auto_offset_reset='earliest'
+        requests = KafkaConsumer(config.KAFKA_TOPIC,
+                                 bootstrap_servers=config.KAFKA_SERVER)  # auto_offset_reset='earliest'
 
         for message in requests:
             db_entry = {}

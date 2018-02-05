@@ -1,12 +1,13 @@
 from sodapy import Socrata
+import config
 
 
 class SodaConnector:
 
     def __init__(self, domain):
-        username = "weber.johanes@gmail.com"
-        password = "test#123"
-        app_token = "vWSR699ElPnWWrJDH90VsNXij"
+        username = config.SOCRATA_USER
+        password = config.SOCRATA_PW
+        app_token = config.SOCRATA_APP_TOKEN
         self.client = Socrata(domain, app_token , username=username, password=password)
 
     def get_data(self, dataset_identifier, **kwargs):
