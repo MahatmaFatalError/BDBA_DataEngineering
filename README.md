@@ -1,7 +1,5 @@
 ![Title Picture](http://fouryears.eu/wp-content/uploads/2015/09/kdnuggets-jobs-2014-titles-300x177.jpg)
 
-# **Johannes**
-
 ## Prerequisites
 
 1. Install Kafka:
@@ -58,10 +56,6 @@
 2. https://plot.ly/python/ipython-notebook-tutorial/
 3. https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
-# **Julian**
-
-...
-
 # SQL Statements
 
 ``` sql
@@ -77,26 +71,3 @@ SELECT longitude, latitude from service_request where complaint_type = 'Noise - 
 SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)
 ```
 noch ein Statement für alle offenen und geschlossenen Request
-
-# **Themen**
-
-## Tools & Frameworks
-- Kafka, Python, Zeppelin, Java
-- sodapy, sqlalchemy, bokeh etc.
-
-## Inhalte
-- Programm erklären
-- Szenario ausdenken
-
-## Probleme
-- Lambda vs. Kappa Stichwort: Stream ist unendlich
-- Paging
-
-## Schritte
-- alles genauestens erklären ;-)
-
-## Entscheidungen
-- PostgreSQL
-- Python
-- Jupyter
-- Kappa statt Lambda
