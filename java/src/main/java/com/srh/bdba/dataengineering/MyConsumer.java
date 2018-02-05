@@ -1,5 +1,6 @@
 package com.srh.bdba.dataengineering;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLType;
@@ -78,7 +79,7 @@ public class MyConsumer implements Runnable {
 		final List<String> tableColumns = findColumnsOfTable(template, targetTable);
 
 		try (final Consumer<Long, String> consumer = createConsumer()) {
-			List<String> topics = Arrays.asList(new String[] { KafkaCommons.TOPIC });
+			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("TOPIC", KafkaCommons.TOPIC)});
 			consumer.subscribe(topics);
 
 			while (true) {
@@ -166,9 +167,9 @@ public class MyConsumer implements Runnable {
 		return new JdbcTemplate(ds);
 	}
 
-	private Consumer<Long, String> createConsumer() {
+	private Consumer<Long, String> createConsumer() throws IOException{
 		Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.BOOTSTRAP_SERVERS);
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());

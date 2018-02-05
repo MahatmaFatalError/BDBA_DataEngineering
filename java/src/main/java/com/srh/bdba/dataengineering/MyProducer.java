@@ -1,6 +1,7 @@
 package com.srh.bdba.dataengineering;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 import java.util.Random;
@@ -47,7 +48,7 @@ public class MyProducer implements Runnable {
 
 			for (final CSVRecord csvRecord : records) {
 				String json = objectMapper.writeValueAsString(csvRecord.toMap());
-				final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(KafkaCommons.TOPIC, Long.parseLong(csvRecord.get("Unique Key")), json);
+				final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(KafkaCommons.loadProperties().getProperty("TOPIC", KafkaCommons.TOPIC), Long.parseLong(csvRecord.get("Unique Key")), json);
 				Thread.sleep(new Random().nextInt(2000));
 				RecordMetadata metadata = producer.send(record).get();
 				System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d)\n", record.key(), record.value(), metadata.partition(), metadata.offset());
@@ -57,9 +58,9 @@ public class MyProducer implements Runnable {
 		}
 	}
 
-	private Producer<Long, String> createProducer() {
+	private Producer<Long, String> createProducer() throws IOException{
 		Properties props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.BOOTSTRAP_SERVERS);
+		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
