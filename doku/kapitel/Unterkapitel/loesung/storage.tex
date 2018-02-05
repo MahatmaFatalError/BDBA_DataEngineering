@@ -27,7 +27,7 @@ Genau wie bei dem "Producer" abstrahiert das Paket \textitbf{kafka-python} die V
 Durch den Einsatz von \textitbf{sqlalchemy} ist es möglich auf die Datenbank und deren Tabelle(n) in einer objektorientierten Weise zuzugreifen
 und die Ausführung von \ac{SQL} wird abstrahiert bzw. durch Klassenmethoden abstrahiert.
 
-\subsubsection{Quellcode}
+\subsubsection{Python Quellcode Programmablauf}
 \label{subsub:quellcode_storage}
 Neben den verwendeten Bibliotheken besteht der \textitbf{Consumer} aus zwei Python Skripten.
 
@@ -62,6 +62,7 @@ Mit diesem kleinen "Kniff" können wir jetzt mit Hilfe der Namen der Tabellenspa
 auf die Keys des \ac{JSON} zugreifen den zugehörigen Wert auslesen und als neuen Wert für das temporäre Dictionary nutzen.
 (Zeile 14 - 16)
 
+\subsubsection{Java Quellcode Programmablauf}
 Auch für den Consumer gibt es eine alternative Implementierung in Java. Diese findet sich in \code{com.srh.bdba.dataengineering.MyConsumer}.
 Der Programmablauf ist ähnlich zu der Python Implementierung, weshalb an dieser Stelle auf Codelistings im Anhang TODO verwiesen wird.
 Kurz zusammengefasst wird ein \code{KafkaConsumer<Long, String>} konfiguriert und pro 100 Millisekunden am Kafka-Cluster nachgefragt, ob es neue \code{ConsumerRecord <Long, String>} für das entsprechende Topic gibt.
