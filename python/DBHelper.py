@@ -25,8 +25,7 @@ class DBHelper:
     def insert(self, entry, table_name):
         table = self.meta.tables[table_name]
         statement = table.insert().values(entry)
-        result = self.con.execute(statement)
-        return result.inserted_primary_key
+        self.con.execute(statement)
 
     def get_table_column_names(self, table_name):
         table = self.meta.tables[table_name]
