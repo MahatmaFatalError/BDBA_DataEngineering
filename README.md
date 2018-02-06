@@ -75,3 +75,4 @@ SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum F
 ```
 //TODO in notebook ausrechnen: Durschnitt der Dauer von einem Descriptor Typ
 select created_date, (closed_date - created_date) as duration, descriptor from service_request where created_date is not null and closed_date is not null order by duration desc
+http://bokeh.pydata.org/en/latest/docs/user_guide/categorical.html#heat-maps
