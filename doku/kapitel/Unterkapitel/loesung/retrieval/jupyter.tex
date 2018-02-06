@@ -48,22 +48,22 @@ Nachfolgender Abschnitt listet die \ac{SQL} Statements zu jeder Fragestellung so
 \newline
 \sql{SELECT complaint\_type, COUNT(complaint\_type) FROM service\_request GROUP BY complaint\_type HAVING COUNT(complaint\_type) > 400 AND COUNT(complaint\_type) < 8000}
 
-\bildhochkant{../bilder/select_1.png}{Beschwerdetypen - Tabelle}{srt}{eigene Darstellung}{0.5}
+\bildhochkant{select_1.png}{Tabelle mit allen Beschwerdetypen}{srt}{eigene Darstellung}
 
 \textbf{zu 2.}
 \newline
-\sql{SELECT descriptor, COUNT(descriptor) FROM service_request  WHERE descriptor IS NOT NULL GROUP BY descriptor ORDER BY count DESC}
+\sql{SELECT descriptor, COUNT(descriptor) FROM service\_request  WHERE descriptor IS NOT NULL GROUP BY descriptor ORDER BY count DESC}
 
-\bild{../bilder/select_2.png}{Top Requests - Bar Plot}{tsr}{eigene Darstellung}
+\bild{select_2.png}{Auszug aus den meisten Service Requests}{toprequests}{eigene Darstellung}{0.75}
 
 \textbf{zu 3.}
 \newline
-\sql{SELECT longitude, latitude FROM service_request WHERE complaint_type = 'Noise - Residential' and latitude IS NOT NULL and longitude IS NOT NULL}
+\sql{SELECT longitude, latitude FROM service\_request WHERE complaint\_type = 'Noise - Residential' and latitude IS NOT NULL and longitude IS NOT NULL}
 
-\bild{../bilder/select_3.png}{Residential Noise in NYC - Heatmap}{rnnyc}{eigene Darstellung}
+\bild{select_3.png}{Heatmap der Lärmquellen in New York}{rnnyc}{eigene Darstellung}{0.75}
 
 \textbf{zu 4.}
 \newline
-\sql{SELECT date_trunc('day', created_date) AS dd, COUNT(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)}
+\sql{SELECT date\_trunc('day', created\_date) AS dd, COUNT(created\_date) as daily\_sum FROM service\_request where EXTRACT(year from created\_date) = '2017' GROUP BY dd ORDER BY date\_trunc('day', created\_date)}
 
-% \bild{../bilder/select_4.png}{Service Request 2017 - Timeline}{sr2017}{eigene Darstellung}
+\bild{select_4.png}{Timeline aller Service Requests in 2017}{sr2017}{eigene Darstellung}{0.75}
