@@ -10,29 +10,9 @@ Werten belegt sind.
 
 In der Datenbanktabelle \code{service\_request} wurden diese Felder außer Acht gelassen.
 
-Die Datenbanktabelle besitzt folgende Attribute
-\begin{enumerate}
-  \item unique\_key
-  \item created\_date
-  \item agency\_name
-  \item complaint\_type
-  \item descriptor
-  \item longitude
-  \item latitude
-  \item agency
-  \item location\_type
-  \item incident\_zip
-  \item incident\_address
-  \item street\_name
-  \item cross\_street\_1
-  \item cross\_street\_2
-  \item address\_type
-  \item city
-  \item status
-  \item due\_date
-  \item borough
-  \item resolution\_description
-\end{enumerate}
+\fullref{lst:databasesql} zeigt das \ac{SQL} Statement um die Tabelle \code{service\_request} in der Datenbank anzulegen.
+
+\lstinputlisting[label=lst:databasesql,caption=\ac{SQL} Skript für Datenbanktabelle, language=SQL, firstline=5, lastline=27]{../db/table.sql}
 
 In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
 eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
@@ -57,7 +37,6 @@ Durch den Einsatz von \code{sqlalchemy} ist es möglich auf die Datenbank und de
 und die Ausführung von \ac{SQL} Statements wird vereinfacht bzw. durch Klassenmethoden abstrahiert.
 
 \subsubsection{Python Quellcode Programmablauf}
-\label{subsub:quellcode_storage}
 Neben den verwendeten Bibliotheken besteht derConsumer aus zwei Python Skripten.
 
 \begin{itemize}
@@ -70,7 +49,7 @@ für die Verbindung zu der Datenbank zuständig, liest Tabellenspalten aus und s
 
 Nachfolgend die Code Snippet der Consumer Klasse.
 
-\lstinputlisting[language=Python, firstline=13, lastline=27]{../python/Consumer.py}
+\lstinputlisting[caption=Code Snippet aus Consumer.py, language=Python, firstline=13, lastline=27]{../python/Consumer.py}
 
 Sobald das Consumer Skript aufgerufen wird, wird eine Verbindung mit der Datenbank
 aufgebaut und der \code{KafkaConsumer} stellt eine Verbindung mit dem Apache Kafka
