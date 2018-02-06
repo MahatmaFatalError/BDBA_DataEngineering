@@ -5,34 +5,38 @@
 Im Rahmen dieses Projektes war es die Zielstellung sich mit Data Ingestion, Data Storage sowie Data Retrieval vertraut zu machen.
 \paragraph{Data Ingestion} ist die Beschaffung der Daten.
 Dies kann entweder mit Hilfe eines Data Streams erfolgen oder einer statischen Datenquelle - also eine Datei die lokal
-auf einem Rechner abgelegt wird wie \zb{} eine \ac{CSV} oder\ac{JSON} Datei.
+auf einem Rechner abgelegt wird wie \zb{} eine \ac{CSV} oder \ac{JSON} Datei.
 
 Unter einem Data Stream versteht man einen kontinuierlichen Datenstrom wie \zb{}
-die Erstellung von immer wieder neuen Twitter Nachrichten.
+die Erstellung von immer wieder neuen Twitter Nachrichten.\\
 Ein wichtiges Merkmal eines Data Streams ist, dass nicht vorherzusehen ist wann der Datenstom zu Ende ist - er könnte theoretisch unendlich sein.
+\\
 Im Falle des Twitter Datenstroms ist es nicht abzusehen wann die letzte Twitter Nachricht geschrieben wird.
 
-Für unsere Aufgabe ist darauf zu achten, dass der Datenstrom über eine \ac{API} öffentlich zugänglich.
+Für unsere Aufgabe ist darauf zu achten, dass der Datenstrom über ein \ac{API} öffentlich zugänglich.
 
 \paragraph{Data Storage} ist die Speicherung der Daten.
 Hierbei wurde uns die Anforderung gestellt, das für die Speicherung der Daten die Streaming Plattform Apache Kafka verwende wird.
 Des Weiteren war es gestattet die Daten zusätzlich in einer relationen Datenbank, NoSQL Datenbank oder mit Spark Streaming zu speichern.
 
 \paragraph{Data Retrieval} ist die Beschaffung der Daten aus einer Datenbank mit \ac{SQL} Abfragen und die abschließende Ausgabe
-der Ergebnisse in Form von Tabellen oder einfachen Visualisierungen.
-Es sollten mindestens drei verschieden \ac{SQL} Abfragen abgesetzt werden mit unterschiedlichen Filter- und Agreggatsfunktionen sowie einer Teilaggregation wie \zb{} GROUP BY.
-Die Visualisierung der Daten sollte in einem virtuellen Notebook erfolgen.
-Als virtuelles Notebook durften wir uns entscheiden zwischen Apache Zeppelin oder Jupyter.
+der Ergebnisse in Form von Tabellen oder einfachen Visualisierungen. \\
+Es sollen mindestens drei verschieden \ac{SQL} Abfragen abgesetzt werden mit unterschiedlichen Filter- und Agreggatsfunktionen sowie einer Teilaggregation wie \zb{} GROUP BY.
+\\
+Die Visualisierung der Daten soll in einem virtuellen Notebook erfolgen.
+\\
+Als virtuelles Notebook durften wir zwischen Apache Zeppelin oder Jupyter entscheiden.
 
 Unsere Aufgabe ist es eine geeignete Vorgehensweise für die Bewältigung dieser Aufgabe zu finden und umzusetzen.
 
-Wir entschieden uns für unser Szenario Daten von NYC Open Data zu nutzen.
+Wir entschieden uns für unser Szenario Daten von NYC Open Data zu nutzen.\\
 NYC Open Data gibt allen \glqq New Yorkern\grqq{} und somit auch der ganzen Welt, die Chance, Open Data, also frei zugängliche Daten,
-einfach zu konsumieren.\autocite{NYCOpenData}.
+einfach zu konsumieren.\autocite{NYCOpenData}
 
 NYC Open Data ermöglicht es sowohl einen kontinuierlichen Data Stream als auch eine statische \ac{CSV} Datei zu konsumieren.
 Dank diesem Umstand entschieden wir uns im Rahmen dieses Projektes beide Möglichkeiten umzusetzen und zu vergleichen.
 Auch bei Data Retrieval entschieden wir uns dafür sowohl Apache Zeppelin als auch Jupyter zu nutzen und zu vergleichen.
 
 \fullref{chap:tools} beschäftigt sich detailierter mit den verwendeten Tools und Programmiersprachen.
-\fullref{chap:loesung} erläutert das gewählte Szenario und beleuchtet die Themen Data Ingestion, Data Storage und Data Retrieval sowie die verwendeten Architektur.
+
+\fullref{chap:loesung} erläutert das gewählte Szenario und die verwendeten Architektur sowie die Lösung zu den Themen Data Ingestion, Data Storage und Data Retrieval.

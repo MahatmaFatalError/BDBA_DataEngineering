@@ -1,36 +1,44 @@
 \subsection{Data Retrieval mit Jupyter}
 Das Jupyter Notebook bietet die Möglichkeit mit \textit{Magic-Commands} direkt aus dem Notebook heraus
 eine Verbindung mit der Datenbank aufzubauen und \ac{SQL} Statements abzusetzen.
+
 Einfache Tabellen werden direkt in Jupyter visualisiert wohingegen komplexere Visualisierungen wie \zb{}
 Balkendiagramme oder Geo Plots mit Python Bibliotheken dargestellt werden müssen.
-Für die Darstellung in Jupyter werden sog. \textit{Widgets} installiert und aktiviert.
-
+\\
+Für die Darstellung in Jupyter werden dann sog. \textit{Widgets} installiert und aktiviert.
 
 Folgende Python Bibliotheken wurden installiert um \ac{SQL} Statements in Jupyter ausführen und visualisieren zu können.
 \begin{itemize}
-  \item ipython-sql
-  \item sqlalchemy (wird von ipython-sql benötigt)
-  \item bokeh
-  \item gmaps
+  \item \code{ipython-sql}
+  \item \code{sqlalchemy} (wird von ipython-sql benötigt)
+  \item \code{bokeh}
+  \item \code{gmaps}
 \end{itemize}
 
 Mit \code{ipython-sql} werden \ac{SQL} \textit{Magic-Command} in Jupyter aktiviert.
+
 \code{ipython-sql} nutzt \code{sqlalchemy} um sich mit der Datenbank zu verbinden.
 Ein abgesetztes \ac{SQL} Statement lässt sich entweder direkt in Jupyter ausgeben
 oder einer beliebigen Variable zuordnen die dann weiterverarbeitet werden kann.
 
+\fullref{fig:jupyterEins} zeigt ein \ac{SQL} Statemement mit \textit{Magic-Command}
+Das Resultat wird direkt in einem Jupyter Notebook als Tabelle gerendert.
 
- \code{bokeh} ist eine mächtige Python Bibliothek um viele Arten der Visualisierung umzusetzen
+\fullref{fig:jupyterZwei} zeigt die Zuweisung eines Resultates zur Variable \code{works}.
+
+\bild{jupyter_1.png}{direkte \ac{SQL} Ausgabe in Jupyter}{jupyterEins}{\autocite{MagicExample}}{0.75}
+
+\bild{jupyter_2.png}{Zuweisung der \ac{SQL} Ausgabe einer Variable}{jupyterZwei}{\autocite{MagicExample}}{0.75}
+
+ \code{bokeh} ist eine Python Bibliothek um viele Arten der Visualisierung umzusetzen
  wie \zb{} Balkendiagramme, Scatter Plots, Geo Maps oder Zeitreihen.
 
-
- Die Visualisierung von Geo Daten erfolgt mit der Bibliothek \code{gmaps}.
+ Die Visualisierung von Geo Daten erfolgt mit der Bibliothek \code{gmaps}.\\
  Diese greift auf die Karten von Google Maps zu erlaubt es die Geo Daten in einem Layer über einen
- beliebigen Kartenausschnitt zu legen.
+ beliebigen Kartenausschnitt zu legen.\\
  Der Vorteil von \code{gmaps} gegenüber \code{bokeh} ist
  zum einen die Nutzung des Kartenmaterials von Google aber auch die interaktive Nutzung
- des Kartenauschnitts mit \zb{} StreetView.
-
+ des Kartenauschnitts mit \zb{} Google StreetView.
 
 Folgende Fragestellungen wurden im Rahmen von Data Retrieval beantwortet.
 
@@ -42,7 +50,6 @@ Folgende Fragestellungen wurden im Rahmen von Data Retrieval beantwortet.
 \end{enumerate}
 
 Nachfolgender Abschnitt listet die \ac{SQL} Statements zu jeder Fragestellung sowie ein dazugehöriges Beispiel.
-
 
 \textbf{zu 1.}
 \newline

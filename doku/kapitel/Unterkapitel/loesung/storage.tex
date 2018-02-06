@@ -1,12 +1,14 @@
 \section{Data Storage}
-Apache Kafka wird dazu verwendet um den kompletten Datensatz eines Service Requests abzuspeichern.
-Ein Consumer liest die Daten von Apache Kafka aus und speichert die relevanten Attribute eines Datensatzes in der Datenbank.
-Als Datenksystem haben wir in unserem Projekt für PostgreSQL entschieden.
+Apache Kafka wird verwendet um den kompletten Datensatz eines Service Requests abzuspeichern.
 
-Zunächst erstellten wir eine Tabelle mit dem Namen \textitbf{service\_request} um die Service Requests von New York zu speichern.
+Ein Consumer liest die Daten von Apache Kafka aus und speichert die relevanten Attribute eines Datensatzes in der PostgreSQL Datenbank.
+
+Zunächst erstellten wir eine Tabelle mit dem Namen \code{service\_request} um die Service Requests von New York zu speichern.
+
 Eine stichprobenartige Analyse des Datensatzes hat ergeben, dass einzelne Felder des original Datensatzes sehr häufig mit \code{NULL}
 Werten belegt sind.
-In der Datenbanktabelle \textitbf{service\_request} wurden diese Felder außer Acht gelassen.
+
+In der Datenbanktabelle \code{service\_request} wurden diese Felder außer Acht gelassen.
 
 Die Datenbanktabelle besitzt folgende Attribute
 \begin{enumerate}
@@ -36,20 +38,21 @@ In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
 eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
 \footnote{https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv}
 
-Die Attribute der Tabelle \textitbf{service\_request} sind identisch zu den
+Die Attribute der Tabelle \code{service\_request} sind identisch zu den
 Bezeichnern des original \ac{SODA} Datensatzes.
 
-Um das Handling mit Aoache Kafka zu vereinfachen wurden zwei weitere Python
+Um das Handling mit Apache Kafka zu vereinfachen wurden zwei Python
 Bibliotheken installiert.
 Diese sind:
 
 \begin{itemize}
-  \item kafka-python
-  \item sqlalchemy
-  \item psycopg2 (wird von sqlalchemy benötigt)
+  \item \code{kafka-python}
+  \item \code{sqlalchemy}
+  \item \code{psycopg2} (wird von sqlalchemy benötigt)
 \end{itemize}
 
 Genau wie bei dem Producer abstrahiert das Paket \code{kafka-python} die Verbindung zu unserem Apache Kafka Server und erleichtert den Zugriff auf das Topic.
+
 Durch den Einsatz von \code{sqlalchemy} ist es möglich auf die Datenbank und deren Tabelle(n) in einer objektorientierten Weise zuzugreifen
 und die Ausführung von \ac{SQL} Statements wird vereinfacht bzw. durch Klassenmethoden abstrahiert.
 
@@ -58,8 +61,8 @@ und die Ausführung von \ac{SQL} Statements wird vereinfacht bzw. durch Klassenm
 Neben den verwendeten Bibliotheken besteht derConsumer aus zwei Python Skripten.
 
 \begin{itemize}
-  \item DBHelper.py
-  \item consumer.py
+  \item \code{DBHelper.py}
+  \item \code{consumer.py}
 \end{itemize}
 
 Während sich das \code{consumer} Skript um das Auslesen eines Kafka Topics kümmert ist die \code{DBHelper} Klasse
@@ -71,21 +74,20 @@ Nachfolgend die Code Snippet der Consumer Klasse.
 
 Sobald das Consumer Skript aufgerufen wird, wird eine Verbindung mit der Datenbank
 aufgebaut und der \code{KafkaConsumer} stellt eine Verbindung mit dem Apache Kafka
-Server bzw. dem Topic "ServiceRequest" her.
-(Zeile 1 - 9)
+Server bzw. dem Topic \code{ServiceRequests} her.
+(Zeile 1 - 7)
 
-Sobald von seitens des Producers ein neuer Datensatz in das Topic "ServiceRequests" geschrieben wird,
+Sobald von seitens des Producers ein neuer Datensatz in das Topic \code{ServiceRequests} geschrieben wird,
 wird der Datensatz ausgelesen in ein \ac{JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
-und in ein temporäres Dictionary geschrieben.
+und in ein temporäres Dictionary geschrieben.\\
 Dieses Dictionary wird abschließend mit Hilfe des \code{DBHelper} Skripts in die
 Datenbanktabelle geladen.
-(Zeile 11 - 18)
 
 Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes identisch.
 
 Mit diesem kleinen \glqq Kniff\grqq{} kann mit Hilfe der Namen der Tabellenspalten
 auf die Keys des \ac{JSON} zugegriffen, den zugehörigen Wert ausgelesen und als neuen Wert für das temporäre Dictionary genutzt werden.
-(Zeile 14 - 16)
+(Zeile 8 - 15)
 
 \subsubsection{Java Quellcode Programmablauf}
 Auch für den Consumer gibt es eine alternative Implementierung in Java.
