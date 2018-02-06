@@ -1,20 +1,46 @@
 \section{Data Storage}
-
-Wie in \fullref{sec:arch} schon erläutert benutzen wir Apache Kafka um die kompletten Datensätze zwischenzuspeichern.
-Ein sog. "Consumer" liest die Daten von Apache Kafka aus und speichert die relevanten Teile der Datensätze in der Datenbank.
+Apache Kafka wird dazu verwendet um den kompletten Datensatz eines Service Requests abzuspeichern.
+Ein Consumer liest die Daten von Apache Kafka aus und speichert die relevanten Attribute eines Datensatzes in der Datenbank.
 Als Datenksystem haben wir in unserem Projekt für PostgreSQL entschieden.
 
-In unserer Datenbank erstellten wir eine Tabelle mit dem Namen \textitbf{service\_request} um die Service Requests von New York zu speichern.
+Zunächst erstellten wir eine Tabelle mit dem Namen \textitbf{service\_request} um die Service Requests von New York zu speichern.
+Eine stichprobenartige Analyse des Datensatzes hat ergeben, dass einzelne Felder des original Datensatzes sehr häufig mit \code{NULL}
+Werten belegt sind.
+In der Datenbanktabelle \textitbf{service\_request} wurden diese Felder außer Acht gelassen.
+
+Die Datenbanktabelle besitzt folgende Attribute
+\begin{enumerate}
+  \item unique_key
+  \item created_date
+  \item agency_name
+  \item complaint_type
+  \item descriptor
+  \item longitude
+  \item latitude
+  \item agency
+  \item location_type
+  \item incident_zip
+  \item incident_address
+  \item street_name
+  \item cross_street_1
+  \item cross_street_2
+  \item address_type
+  \item city
+  \item status
+  \item due_date
+  \item borough
+  \item resolution_description
+\end{enumerate}
 
 In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
 eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
 \footnote{https://dev.socrata.com/foundry/data.cityofnewyork.us/fhrw-4uyv}
 
-Wir erstellten unsere Datenbanktabelle bzw. die Attribute der Service Requests Tabelle mit
-genau den gleichen Bezeichnern wie die des \ac{SODA} Datensatzes.
+Die Attribute der Tabelle \textitbf{service\_request} sind identisch zu den
+Bezeichnern des original \ac{SODA} Datensatzes.
 
-Um den Consumer technisch umzusetzen benutzen wir die Programmiersprache Python wie auch weitere Bibliotheken um das Handling mit Apache Kafka
-und der Datenbank zu vereinfachen.
+Um das Handling mit Aoache Kafka zu vereinfachen wurden zwei weitere Python
+Bibliotheken installiert.
 Diese sind:
 
 \begin{itemize}
@@ -23,27 +49,27 @@ Diese sind:
   \item psycopg2 (wird von sqlalchemy benötigt)
 \end{itemize}
 
-Genau wie bei dem "Producer" abstrahiert das Paket \textitbf{kafka-python} die Verbindung zu unserem Apache Kafka Server und erleichtert den Zugriff auf das Topic.
-Durch den Einsatz von \textitbf{sqlalchemy} ist es möglich auf die Datenbank und deren Tabelle(n) in einer objektorientierten Weise zuzugreifen
-und die Ausführung von \ac{SQL} wird abstrahiert bzw. durch Klassenmethoden abstrahiert.
+Genau wie bei dem Producer abstrahiert das Paket \code{kafka-python} die Verbindung zu unserem Apache Kafka Server und erleichtert den Zugriff auf das Topic.
+Durch den Einsatz von \code{sqlalchemy} ist es möglich auf die Datenbank und deren Tabelle(n) in einer objektorientierten Weise zuzugreifen
+und die Ausführung von \ac{SQL} Statements wird vereinfacht bzw. durch Klassenmethoden abstrahiert.
 
 \subsubsection{Python Quellcode Programmablauf}
 \label{subsub:quellcode_storage}
-Neben den verwendeten Bibliotheken besteht der \textitbf{Consumer} aus zwei Python Skripten.
+Neben den verwendeten Bibliotheken besteht derConsumer aus zwei Python Skripten.
 
 \begin{itemize}
   \item DBHelper.py
   \item consumer.py
 \end{itemize}
 
-Während sich das \textitbf{consumer} Skript um das Auslesen eines Kafka Topics kümmert ist der \textitbf{DBHelper}
-dafür zuständig die Verbindung zu der Datenbank aufzubauen, Tabellenspalten auszulesen und einen Datensatz in der Tabelle zu speichern.
+Während sich das \code{consumer} Skript um das Auslesen eines Kafka Topics kümmert ist die \code{DBHelper} Klasse
+für die Verbindung zu der Datenbank zuständig, liest Tabellenspalten aus und speichert einen Datensatz in der Tabelle.
 
-Nachfolgend das Consumer Skript.
+Nachfolgend die Code Snippet der Consumer Klasse.
 
-\lstinputlisting[language=Python]{../python/consumer.py}
+\lstinputlisting[language=Python, firstline=13, lastline=27]{../python/Consumer.py}
 
-Sobald das Consumer Skript gestartet wird, wird eine Verbindung mit der Datenbank
+Sobald das Consumer Skript aufgerufen wird, wird eine Verbindung mit der Datenbank
 aufgebaut und der \code{KafkaConsumer} stellt eine Verbindung mit dem Apache Kafka
 Server bzw. dem Topic "ServiceRequest" her.
 (Zeile 1 - 9)
@@ -55,15 +81,15 @@ Dieses Dictionary wird abschließend mit Hilfe des \code{DBHelper} Skripts in di
 Datenbanktabelle geladen.
 (Zeile 11 - 18)
 
-Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes gleich
-und konnten sie somit als Schlüsselattribute für den jeweils anderen Datensatz benutzen.
+Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes identisch.
 
-Mit diesem kleinen "Kniff" können wir jetzt mit Hilfe der Namen der Tabellenspalten
-auf die Keys des \ac{JSON} zugreifen den zugehörigen Wert auslesen und als neuen Wert für das temporäre Dictionary nutzen.
+Mit diesem kleinen \glqq Kniff\grqq{} kann mit Hilfe der Namen der Tabellenspalten
+auf die Keys des \ac{JSON} zugegriffen, den zugehörigen Wert ausgelesen und als neuen Wert für das temporäre Dictionary genutzt werden.
 (Zeile 14 - 16)
 
 \subsubsection{Java Quellcode Programmablauf}
-Auch für den Consumer gibt es eine alternative Implementierung in Java. Diese findet sich in \code{com.srh.bdba.dataengineering.MyConsumer}.
+Auch für den Consumer gibt es eine alternative Implementierung in Java.
+Diese findet sich in \code{com.srh.bdba.dataengineering.MyConsumer}.
 Der Programmablauf ist ähnlich zu der Python Implementierung, weshalb an dieser Stelle auf Codelistings im Anhang TODO verwiesen wird.
 Kurz zusammengefasst wird ein \code{KafkaConsumer<Long, String>} konfiguriert und pro 100 Millisekunden am Kafka-Cluster nachgefragt, ob es neue \code{ConsumerRecord <Long, String>} für das entsprechende Topic gibt.
 Falls dem so ist wird die \ac{JSON} Nachricht aus dem \code{ConsumerRecord<Long, String>} ausgepackt und per \code{PreparedStatement} über \code{JDBC} in die PostgreSQL Tabelle eingefügt.

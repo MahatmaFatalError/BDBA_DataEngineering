@@ -4,7 +4,8 @@ In diesem Kapitel werden die einzelnen Schritte beschrieben, welche durchgeführ
 
 \textbf{Hinweis:}
 \newline
-Hierbei handelt es sich lediglich um eine grob-granulare Beschreibung der Inbetriebnahme des Prototypen. Weitere Details zur Installation und Nutzung können den Quellen entnommen werden.
+Hierbei handelt es sich lediglich um eine grob-granulare Beschreibung der Inbetriebnahme des Prototypen.
+Weitere Details zur Installation und Nutzung können den Quellen entnommen werden.
 
 \section{Voraussetzung \& Infrastruktur}
 \subsection{Installation}
@@ -38,7 +39,7 @@ Je nachdem welche Technologie man für die Consumer, Producer und Auswertung ver
 	\item Apache Zookeeper starten und initialisieren
 	\item Apache Kafka starten und initialisieren
 	\item Kafka Topic anlegen
-	\item PostgreSQL Datenbankschema initialisieren\footnote{DDL Skripte um das Datenbankschema in PostgreSQL aufzubauen befinden sich im Ordner /DB}
+	\item PostgreSQL Datenbankschema initialisieren\footnote{DDL Skripte um das Datenbankschema in PostgreSQL aufzubauen befinden sich im Ordner /db}
 \end{enumerate}
 
 \section{Setup und Starten des Python Prototypen }
@@ -60,7 +61,7 @@ Je nachdem welche Technologie man für die Consumer, Producer und Auswertung ver
     \item \shellcmd{jupyter nbextension enable --py --sys-prefix widgetsnbextension}
     \item \shellcmd{jupyter nbextension enable --py --sys-prefix gmaps}
   \end{itemize}
-  \item Google Maps API Key erstellen um die Google Maps Visualisierungen nutzen zu können
+  \item Google Maps \ac{API} Key erstellen um die Google Maps Visualisierungen nutzen zu können\footnote{Eine Anleitung zum Erzeugen eines \ac{API} Keys gibt es \hyperref[hier]{http://jupyter-gmaps.readthedocs.io/en/latest/authentication.html}}
   \item Applikation Token für die \ac{SODA} \ac{API} beziehen\autocite{AppToken}
   \item Python Konfigurationsdatei \texttt{/python/config.py} pflegen
   \item Python Consumer und Producer starten via \texttt{/python/main.py}
