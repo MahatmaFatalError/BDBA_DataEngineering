@@ -71,10 +71,10 @@ Je nachdem welche Technologie man für die Consumer, Producer und Auswertung ver
 \section{Setup und Starten des Java Prototypen }
 
 \begin{enumerate}
-	\item CSV Datei von \hyperref[hier]{https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9} runterladen und lokal speichern
-	\item Java Projekt mit Maven bauen
-	\item Konfiguration \texttt{/java/src/main/resources/kafka\_config.properties} pflegen
+	\item CSV Datei von \hyperref[https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9]{https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9} runterladen und lokal speichern (ca. 11GB).
+	\item Java Projekt mit Maven \shellcmd{mvn clean install} bauen.
+	\item Konfiguration \texttt{/java/src/main/resources/kafka\_config.properties} pflegen.
 	\item Python Consumer und Producer starten via \texttt{com.srh.bdba.dataengineering.Main}. Beim Aufruf der \texttt{Main()} muss man den Pfad zur CSV Datei angeben.
-	\item Apache Zeppelin starten und Datenbankverbindung sowie JDBC Treiber im PSQL Interpreter pflegen
-	\item Vorkonfiguriertes Notebook BDBA/TODO laden
+	\item Apache Zeppelin starten und Datenbankverbindung sowie JDBC Treiber im PSQL Interpreter pflegen\footnote{TODO sceenshot im Anhang}.
+	\item Vorkonfiguriertes Notebook BDBA/zeppelin\_servicerequests\_notebook.json laden und Abfragen ausführen.
 \end{enumerate}
