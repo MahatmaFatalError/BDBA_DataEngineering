@@ -47,6 +47,7 @@ Folgende Fragestellungen wurden im Rahmen von Data Retrieval beantwortet.
   \item Wie lautet die Beschreibung der häufig vorkommenden Service Requests?
   \item An welchen Orten von New York City wurden Service Request vom Typ 'Noise - Residential' abgesetzt?
   \item Wieviele Service Requests sind im Jahr 2017 eingegangen? Gruppiert nach Tag und Sortiert nach dem Erstellungsdatum.
+  \item Wie lange wurde eine Art von Service Request im Durschnitt bearbeitet? Wie lange war die minimale und maximale Bearbeitungszeit?
 \end{enumerate}
 
 Nachfolgender Abschnitt listet die \ac{SQL} Statements zu jeder Fragestellung sowie ein dazugehöriges Beispiel.
@@ -74,3 +75,13 @@ Nachfolgender Abschnitt listet die \ac{SQL} Statements zu jeder Fragestellung so
 \sql{SELECT date\_trunc('day', created\_date) AS dd, COUNT(created\_date) as daily\_sum FROM service\_request where EXTRACT(year from created\_date) = '2017' GROUP BY dd ORDER BY date\_trunc('day', created\_date)}
 
 \bild{select_4.png}{Timeline aller Service Requests in 2017}{sr2017}{eigene Darstellung}{0.75}
+
+\textbf{zu 5.}
+\newline
+\sql{SELECT AVG(closed\_date - created\_date) AS avg\_duration, MIN(closed\_date - created\_date) AS min\_duration, MAX(closed\_date - created\_date) AS max\_duration, complaint\_type FROM service\_request
+where created\_date IS NOT NULL and closed\_date IS NOT NULL
+GROUP BY complaint\_type
+HAVING MAX(closed\_date - created\_date) < INTERVAL '365 days' and MIN(closed\_date - created\_date) > '00:00:00'
+ORDER BY avg\_duration asc}
+
+\bild{select_5.png}{Lageparameter zur Bearbeitungsdauer von Service Requests}{lparam}{eigene Darstellung}{0.75}
