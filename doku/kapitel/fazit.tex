@@ -1,4 +1,4 @@
-\chapter{Fazit}
+\chapter{Zusammenfassung \& Fazit}
 \label{chap:fazit}
 
 % fazit in die loesung packen? Fazit = Fazit zum Vergleich der Tools und der eingesetzetn Architektur
@@ -10,30 +10,32 @@
 % kafka connectoren wäre besser
 % jupyter vs. zeppelin feature vergleich
 % java vs. python vs. kafka stream vs. kafka connect
+\subsubsection{Gesamtarchitektur}
 
-Apache Kafka wird dazu verwendet um alle empfangenen Datensätz ungeachtet ihre Inhaltes in einem Topic zu speichern.
-Für dieses Projekt relevante Informationen wurden dann in die PostgreSQL Datenbank übertragen und konnten dann von dort mittels
-Apache Zeppelin und Jupyter angerufen werden.
+Apache Kafka wird dazu verwendet um alle empfangenen Datensätze ungeachtet ihres Inhaltes in einem Topic zu speichern.
+Für dieses Projekt relevante Informationen wurden dann in die PostgreSQL Datenbank übertragen und konnten dann von dort mittels Apache Zeppelin und Jupyter ausgewertet werden.
 
-Aufgrund der limitiertes Grüße unseres Datensatzes und der überschaubaren Rechenleistung des verfügbaren Equipments in unserem Projekt
+Aufgrund der limitierten Größe unseres Datensatzes und der Rechenleistung des verfügbaren Equipments in unserem Projekt
 hätte auf Apache Kafka verzichtet werden können, sodass die Daten direkt aus der \ac{API} in die Datenbank geschrieben werden
 ohne den \glqq Umweg\grqq{} über Apache Kafka.\\
-Jedoch in einem realen Szenario ist dieser Weg über Apache Kafka keineswegs falsch.\\
-Dieser Ansatz ermöglicht es zum Speicherplatz in der Datenbank zu sparen und trägt zu einer besseren Performance bei.
-Darüber hinaus kann mit der Verwendung von Kafka Streams das original Topic gezielter angepasst und/oder verändert werden.
+Jedoch ist in einem realen Szenario dieser Weg über Apache Kafka keineswegs falsch.\\
+Dieser Ansatz ermöglicht es in der Datenbank nur diejenigen Daten vorzuhalten, die für die Beantwortung einer konfirmatorischen Frage notwendig sind und trägt damit zu einer besseren Performance bei. Zudem ist es leichter die Ausfallsicherheit und damit Verfügbarkeit der Daten in einem Kafka Cluster zu erreichen als in einem relationalen DB Cluster.
+Darüber hinaus kann mit der Verwendung von Kafka Streams das original Topic gezielter angepasst und erneut wiedergeben werden.
 
 Kafka Streams ist eine Klient Bibliothek zur Verfügung gestellt von Confluent.
 Mit dieser Bibliothek können Anwendungen und Microservices erstellt werden, die eingehende Daten eines Topics
-auslesen, weiterverarbeiten und in zweites und vor allem separates Topic schreiben.
-
-Kafka Streams bieten den Vorteil, dass sie komplett in das vorhandenen Apache Kafka Ökosystem integriert,
-hoch skalierbar und fehlertolreant sind.\\
+auslesen, weiterverarbeiten und in zweites, vor allem separates, Topic schreiben.
+Kafka Streams bieten, wie alle Komponenten des Kafka Ökosystems, den Vorteil, dass sie untereinander hoch integriert,
+hoch skalierbar und fehlertolerant sind.\\
 Die dafür empfohlenen Programmiersprache von Konfluent ist Java,
 jedoch gibt es auch Implementierungen für andere Sprachen wie \zb{} Python.\autocite{KafkaStreams}
 
+\subsubsection{Consumer \& Producer Implementierungen}
 Beim Vergleich der beiden Implementierung für jeweils Kafka Producer und Kafka Consumer fällt auf, dass die Java Implementierung eher mit low-level APIs operiert und damit mehr Aufwand für Konfiguration und Konvertierung von Daten anfällt, wohingegen Python durch Verwendung von Frameworks, die Komplexität stärker abstrahieren, und schlankerer Syntax mit deutlich weniger Codezeilen auskommt. Somit stellt Python für einen PoC bzw. Prototypen die schnellere Alternative da, wobei Java und sein feinerer Detailgrad eher in komplexeren Umgebungen seine Stärken ausspielen kann.\newline
-Aufgrund dessen, dass die Komplexität unserer Consumer und Producer insgesamt gering ist, da keine inhaltliche Transformation der Daten stattfindet, empfiehlt es sich für den produktiven Betrieb eher Kafka Connector zu evaluieren. Kafka Connector sind ein  Teil der Confluent-Plattform und bilden Connectoren zu gängigen Datenquellen und -senken. Dabei setzen sie auf deklarative Konfiguration anstatt individuelle und imperative Programmskripte. Zudem bieten sie Fehlertoleranz und bessere Skalierbarkeit als einzelne Consumer bzw. Producer Skripte.
+Aufgrund dessen, dass die Komplexität unserer Consumer und Producer insgesamt gering ist, da keine inhaltliche Transformation der Daten stattfindet, empfiehlt es sich für den produktiven Betrieb eher Kafka Connector zu evaluieren.\\
+Kafka Connector sind ein  Teil der Confluent-Plattform und bilden Connectoren zu gängigen Datenquellen und -senken. Dabei setzen sie auf deklarative Konfiguration anstatt individuelle und imperative Programmskripte. Zudem bieten sie Fehlertoleranz und bessere Skalierbarkeit als einzelne Consumer bzw. Producer Skripte.
 
+\subsubsection{Analysewerkzeuge}
 Obwohl Apache Zeppelin im Mai 2016 den Incubator Status verlies macht es im allgemeinen einen noch sehr unreifen und unfertigen Eindruck,
 was bei Versionsnummer 0.7 nichts überraschendes ist.
 Bemerkbar macht sich dies vor allem bei der Installation und Setup insbesondere unter Windows.
@@ -46,25 +48,20 @@ Letztlich lässt sich zusammenfassen, dass die Konzepte hinter Apache Zeppelin g
 
 Die Installation und Erstkonfiguration mit Jupyter unter Windows ist in wenigen Minuten erledigt.
 Sobald Jupyter und die \text{Magic-Commands} mit dem Paketmanager \textit{pip} installiert wurden können
-schon erste \ac{SQL} Statements abgesetzt werden.
-
+schon erste \ac{SQL} Statements abgesetzt werden.\\
 Resultate eines \ac{SQL} Statements werden grafisch als Tabelle dargestellt.
 Für jegliche Art von Visualisierung die darüber hinaus geht müssen separate Bibliotheken installiert werden
 über die dann die Visualisierung erfolgt.
 Zusätzlich müssen \textit{Widgets} installiert und aktiviert werden wenn die Grafik integriert in Jupyter angezeigt werden soll.\\
-Auch hier gibt es Einschränkungen:\\
-Falls kein Widget für die aktuell genutzte Bibliothek zur Verfügung steht kann nur die Anzeigemöglichkeiten der Bibliothek genutzt werden.
-
-Das dynamische Ändern eines \ac{SQL} Statements mit einem Textfeld - so wie es in Apache Zeppelin erfolgen kann - benötigt ihn Jupyter zwar zusätzlichen Implmentierungsaufwand kann aber letztlich genauso wie in Apache Zeppelin erfolgen.
-
+Auch hier gibt es Einschränkungen: Falls kein Widget für die aktuell genutzte Bibliothek zur Verfügung steht kann nur die Anzeigemöglichkeiten der Bibliothek genutzt werden.\\
+Das dynamische Ändern eines \ac{SQL} Statements mit einem Textfeld - so wie es in Apache Zeppelin erfolgen kann - benötigt ihn Jupyter zwar zusätzlichen Implmentierungsaufwand kann aber letztlich genauso wie in Apache Zeppelin erfolgen.\\
 Die \textit{Magic-Commands} sind sowohl in Apache Zeppelin als auch Jupyter eine sehr gute Möglichkeit um kleine Code Snippets mit \code{\ac{SQL}} oder \code{R} zu Prototypen ohne tief in die Programmierung einzusteigen.
 Alles darüber hinaus wie komplexe Visualiserungen oder Manipulation der Ergebnisse erfordert die Nutzung von weiteren Bibliotheken und
 Visualisierung können nur bedingt in Apache Zeppelin und Jupyter angezeigt werden.
 
 In unserem Projekt haben wir die Erkenntnis gewonnen, dass die virtuellen Notebooks für schnelles Prototyping sehr gut geeignet sind.
 Will man aber das Notebook so anpassen, dass \zb{} dynamisch Daten von einer externen Datenquelle abgerufen werden
-und sich die genutztes Charts kontinierlich anpassen - Stichwort: Monitoring - dann ist wesentlich mehr Aufwand nötig und man stellt sich die
-Frage ob die virtuellen Notebooks dafür noch geeignet sind und nicht für dieses Szenario ein anderes oder weitere Tools benötigt werden.
-
-Die Erstellung eines virtuellen Notebooks das zu Monitoringzwecken genutzt werden kann birgt weitere interessante Ansätze und Überlegungen die
+und sich die genutztes Charts kontinuierlich anpassen - Stichwort Real-Time Monitoring - dann ist wesentlich mehr Aufwand nötig und man stellt sich die
+Frage ob die virtuellen Notebooks dafür noch geeignet sind und nicht für dieses Szenario ein anderes oder weitere Tools benötigt werden. In diesem Umfeld sind vor allem die Open Source Werkzeuge Kibana von Elastic und Grafana zu nennen.\\
+Die Erstellung eines Monitoring-Dashboards mit Echtzeit Metriken in Kombination mit einem Notebook für explorative Analytik birgt weitere interessante Ansätze und Überlegungen die
 jedoch, mit Hinblick auf das Projektziel, nicht weiter verfolgt wurden.
