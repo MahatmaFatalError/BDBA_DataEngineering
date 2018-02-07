@@ -24,6 +24,7 @@ CREATE TABLE public.service_request
     borough character(100) COLLATE pg_catalog."default",
     resolution_description text COLLATE pg_catalog."default",
     unique_key character(255) COLLATE pg_catalog."default",
+    closed_date timestamp with time zone,
     CONSTRAINT service_request_unique_key_key UNIQUE (unique_key)
 )
 WITH (

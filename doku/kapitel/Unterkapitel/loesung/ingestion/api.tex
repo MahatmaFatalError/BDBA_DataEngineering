@@ -1,54 +1,61 @@
 \subsection{Data Ingestion via \acs{SODA} Schnittstelle}
-Wie in \fullref{sec:arch} erläutert ist es die Aufgabe des Data Ingestion Prototyps zum einen Daten aus der externen Quelle auszulesen
-aber auch die Daten direkt an die Apache Kafka Plattform weiterzuleiten und in ein Topic zu speichern.
 
-Die Umsetzung des "Producers" erfolgte mit Python.
-Zusätzlich wurden folgende Frameworks benutzt um die Implementierung des \textit{producers} zu unterstützen:
+Folgende Python Bibliotheken wurden genutzt um die Implementierung des Producers zu unterstützen:
 
 \begin{itemize}
-  \item sodapy
-  \item kafka-python
+  \item \code{sodapy}
+  \item \code{kafka-python}
 \end{itemize}
 
-Im Kern basiert \textitbf{sodapy} auf dem \textit{Request} Paket von Python und vereinfacht das Absenden von Anfragen an die \ac{SODA} \ac{API}.\autocite{Sodapy}
+Im Kern basiert \code{sodapy} auf dem \code{Request} Paket von Python und vereinfacht das Absenden von Anfragen an die \ac{SODA} \ac{API}.\autocite{Sodapy}
 
-\textitbf{kafka-python} ist ein offiziell unterstützter Klient für Apache Kafka in der Programmiersprache Python und basiert lose auf der offiziellen Java Implementierung des Kafka Klients.\autocite{KafkaPython}
-Gegenüber dem offiziellen Paket \textit{confluent-kafka-python} ist das Paket \textitbf{kafka-python} komplett in Python geschrieben.\autocite{KafkaClients}
+\code{kafka-python} ist ein offiziell unterstützter Klient für Apache Kafka in der Programmiersprache Python und basiert lose auf der offiziellen Java Implementierung des Kafka Klients.\autocite{KafkaPython}
+Gegenüber dem offiziellen Paket \code{confluent-kafka-python} ist \code{kafka-python} komplett in Python geschrieben und somit entfällt die Installation des Pakets \code{librdkafka },
+das bei dem offiziellen Klient von Confluent noch installiert werden muss.\autocite{KafkaClients}
 
 \subsubsection{Python Quellcode Programmablauf}
-Der \textit{producer} besteht insgesamt aus zwei Python Skripten:
+Der Producer besteht insgesamt aus zwei Python Skripten:
 
 \begin{itemize}
-  \item SodaHelper.py
-  \item producer.py
+  \item \code{SodaHelper.py}
+  \item \code{producer.py}
 \end{itemize}
 
-Das SodaHelper Skript ist ein separatzer Wrapper um die sodapy Bibliothek um die Verbindung zu der \ac{API} herzustellen und die Daten zu holen.
+Das SodaHelper Skript ist ein separater Wrapper um die \code{sodapy} Bibliothek um die Verbindung zu der \ac{API} herzustellen und die Daten zu holen.
+\\
+Der Producer ist für die Weiterleitung der empfangenen Daten an Apache Kafka zuständig.
+\\
 Somit wird eine klare Aufgabentrennung erreicht.
-Das Skript SodaHelper ist für die Verbindung zu der \ac{API} zuständig und das producer Skript nur für die Weiterleitung der empfangenen Daten an Apache Kafka.
 
-Da es sich hierbei nicht um ein Live Stream handelt wie \zb{} bei Twitter \ac{API}, haben wir uns dazu entschieden einen "Fake Stream" zu erstellen,
-indem nicht alle Daten sofort an Apache Kafka weitergeleitet werden sondern immer ein gewisser Abstand zwischen dem Senden der einzelnen Datensätze
+Da es sich hierbei nicht um ein Live Stream handelt wie \zb{} bei der Twitter \ac{API}, haben wir uns dazu entschieden einen \glqq Fake Stream\grqq{} zu erstellen.
+\\
+Dies wurde erreicht indem nicht alle Daten sofort an Apache Kafka weitergeleitet werden sondern immer ein Abstand zwischen 0 und 1 Sekunde zwischen dem Senden der einzelnen Datensätze
 erzwungen wird.
 
-Unser ausgewählter Datensatz ist sehr groß. Wenn \zb{} der Nutzer Daten von einem Monat abrufen will kann es vorkommen, dass in diesem Zeitraum mehr als 100.000 Datensätze
-bereit zum Abruf stehen.
+Der ausgewählter Datensatz ist sehr groß.
+Wenn \zb{} der Nutzer Daten von einem Monat abrufen will kann es vorkommen,
+dass in diesem Zeitraum mehr als 100.000 Datensätze geladen werden.
+
 Da der Abruf von einer solch großen Menge an Daten über die API eine sehr hohe Rechenleistung erfordert und diese im Rahmen des Projektes nicht zur Verfügung steht wurde
-eine Art \textit{Paging} entwickelt.
+ein Paging entwickelt.
+
 Durch die feste Angabe eines Limits von 10.000 wird sichergestellt, dass ein Request an die \ac{SODA} \ac{API} nur maximal 10.000
-Datensätze liefern kann und durch einen entwickelten Algorithmus werden so lange Requests ausgeführt bis der gewünschte Zeitraum des Users komplett empfangen und
+Datensätze liefern kann und der Algorithmus führt so lange Requests an die \ac{API} aus bis der gewünschte Zeitraum des Users komplett empfangen und
 die Request an Apache Kafka gesendet wurden.
 
-Vorgegeben durch das Paket \textit{kafka-python} können die Einträge eines Topics nur als byte String abgelegt werden.
-Aus diesem Grund wird der empfangende Datensatz zuerst in ein byte string umgewandelt bevor er an Apache Kafka gesendet wird.
+Vorgegeben durch das Paket \code{kafka-python} können die Einträge eines Topics nur als byte String abgelegt werden.
+Aus diesem Grund wird der empfangende Datensatz zuerst in ein byte string umgewandelt und dann an Apache Kafka gesendet.
 
-Folgendes Code Snippet zeigt den entwickelten Algorithmus um das Paging zu realisieren.
-Mit Hilfe des SodaHelpers werden zunächst die Datensätze von der API - unter Berücksichtigung des Limits, des Anfangs- und Enddatums geholt.
-Wie in dem Snippet zu erkennen wird die Variable \textit{limit} in dem Skript gesetzt.
-die Variablen \textit{from\_date} und \textit{to\_date} werden beim Starten des Skripts von dem User gesetzt.
+Folgendes Code Snippet zeigt den Algorithmus um das Paging zu realisieren.
 
-Der Algorithmus beruht auf der Annahme, dass wenn der empfangene Datensatz genau die Länge des Limits hat es immer noch weitere Datensätze gibt die von der API abgerufen werden müssen.
-Wenn also das Limit erreicht wurde wird das Datum des letzten Datensatzes als neues Enddatum festgelegt und der Prozess beginnt von vorne, solange die Anzahl der empfanenen Datensätze nicht mehr dem Limit entsprechen
+Mit Hilfe des SodaHelpers werden zunächst die Datensätze von der \ac{API} - unter Berücksichtigung des Limits, des Anfangs- und Enddatums geholt.
+\\
+Die Variablen \code{from\_date} und \code{to\_date} werden beim Starten des Programms von dem User gesetzt.
+
+Der Algorithmus beruht auf der Annahme, dass wenn der empfangene Datensatz genau die Länge des Limits hat es immer noch weitere Datensätze gibt die von der \ac{API} abgerufen werden müssen.
+Wenn also das Limit erreicht wurde wird das Datum des letzten Datensatzes als neues Enddatum festgelegt und der Prozess beginnt von vorne.
+\\
+Dies geschieht solange die Anzahl der empfanenen Datensätze nicht dem Limit entsprechen
 oder die verwendeten Anfangs- und Enddatumswerte identisch sind.
 
-\lstinputlisting[language=Python, firstline=20, lastline=45]{../python/producer.py}
+\lstinputlisting[language=Python, caption=Code Snippet aus Producer.py, firstline=23, lastline=52]{../python/Producer.py}

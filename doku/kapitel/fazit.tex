@@ -2,3 +2,26 @@
 \label{chap:fazit}
 
 fazit in die loesung packen? Fazit = Fazit zum Vergleich der Tools und der eingesetzetn Architektur
+
+architektur gut weil
+kafka hat ALLE Daten
+postgres nur daten mit sinn!
+
+macht kein sinn auf unserer architektur aber definitv big data
+
+
+Obwohl unsere konkrete Implementierung 
+
+kafka connectoren wäre besser
+
+java vs. python vs. kafka stream vs. kafka connect
+
+Beim Vergleich der beiden Implementierung für jeweils Kafka Producer und Kafka Consumer fällt auf, dass die Java Implementierung eher mit low-level APIs operiert und damit mehr Aufwand für Konfiguration und Konvertierung von Daten anfällt, wohingegen Python durch Verwendung von Frameworks, die Komplexität stärker abstrahieren, und schlankerer Syntax mit deutlich weniger Codezeilen auskommt. Somit stellt Python für einen PoC bzw. Prototypen die schnellere Alternative da, wobei Java und sein feinerer Detailgrad eher in komplexeren Umgebungen seine Stärken ausspielen kann.\newline
+Aufgrund dessen, dass die Komplexität unserer Consumer und Producer insgesamt gering ist, da keine inhaltliche Transformation der Daten stattfindet, empfiehlt es sich für den produktiven Betrieb eher Kafka Connector zu evaluieren. Kafka Connector sind ein  Teil der Confluent-Plattform und bilden Connectoren zu gängigen Datenquellen und -senken. Dabei setzen sie auf deklarative Konfiguration anstatt individuelle und imperative Programmskripte. Zudem bieten sie Fehlertoleranz und bessere Skalierbarkeit als einzelne Consumer bzw.Producer Skripte.
+
+
+jupyter vs. zeppelin feature vergleich
+
+
+Obwohl Apache Zeppelin im Mai 2016 den Incubator Status verlies macht es im allgemeinen einen noch sehr unreifen und unfertigen Eindruck, was bei Versionsnummer 0.7 nichts überraschendes ist. Bemerkbar macht sich dies vor allem bei der Installation und Setup insbesondere unter Windows. So glückte der Start von Zeppelin auf nur 1 von 3 Windows PCs. Des weiteren stürze der JDBC Interpreter während des Betriebs mehrfach aus unerfindlichen Gründen ab, was nur durch einen Neustart behoben werden konnte. Zudem bietet Zeppelin 0.7 leider nur sehr rudimentäre Charting-Funktionalitäten. Zwar gibt es eine Vielzahl an externen Plug-Ins die via Zeppelins Erweiterungsframework \textit{Helium} eingebunden werden können und erweiterte Diagrammtypen\footnote{z.B. Kartendienste und  Heatmaps, siehe \href{https://zeppelin.apache.org/helium_packages.html}{https://zeppelin.apache.org/helium\_packages.html} } bereitstellen, doch setzen diese Plug-Ins oft Zeppelin Version 0.8-\textit{SNAPSHOT} voraus. Diese Entwicklungsversion kann man nur per Sourcecode beziehen und selber kompilieren bzw. bauen. Das klappte sogar nach mehreren Versuchen, jedoch ließ sich das fertige \textit{binary} nicht starten.\newline
+Letztlich lässt sich zusammenfassen, dass die Konzepte hinter Apache Zeppelin gut sind, die konkrete Implementierung jedoch noch nicht ausgereift ist.

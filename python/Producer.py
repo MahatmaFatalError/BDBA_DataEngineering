@@ -13,7 +13,7 @@ class Producer(threading.Thread):
 
     def __init__(self, from_date, to_date):
         super(Producer, self).__init__()
-        self.soda = SodaConnector(config.SODA_DOMAIN)
+        self.soda = SodaConnector(config.SOCRATA_DOMAIN)
         self.topic = config.KAFKA_TOPIC
         self.producer = KafkaProducer()
         self.limit = 10000
@@ -21,7 +21,7 @@ class Producer(threading.Thread):
         self.to_date = to_date
 
     def fetch_data(self, from_date, to_date, limit):
-        requests = self.soda.get_data(dataset_identifier=config.SODA_DATASET,
+        requests = self.soda.get_data(dataset_identifier=config.SOCRATA_DATASET,
                                       from_date=from_date,
                                       to_date=to_date,
                                       limit=limit)
@@ -48,4 +48,4 @@ class Producer(threading.Thread):
             number_of_entries, to_date = self.fetch_data(from_date=self.from_date,
                                                          to_date=to_date,
                                                          limit=self.limit)
-        print("The End.")
+        print("End.")

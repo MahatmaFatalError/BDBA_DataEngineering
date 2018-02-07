@@ -1,9 +1,9 @@
+import config
 from bokeh.io import output_file, output_notebook, show
 from bokeh.plotting import figure
 from bokeh.models import (
     GMapPlot, GMapOptions, ColumnDataSource, Circle, Range1d, PanTool, WheelZoomTool, BoxSelectTool
 )
-import config
 
 def plot_geo(lat_list, lon_list, notebook=False):
     map_options = GMapOptions(lat=40.711724, lng=-74.011300, map_type="roadmap", zoom=11)

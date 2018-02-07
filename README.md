@@ -70,4 +70,9 @@ SELECT longitude, latitude from service_request where complaint_type = 'Noise - 
 ``` sql
 SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)
 ```
-noch ein Statement für alle offenen und geschlossenen Request
+``` sql
+
+```
+//TODO in notebook ausrechnen: Durschnitt der Dauer von einem Descriptor Typ
+select created_date, (closed_date - created_date) as duration, descriptor from service_request where created_date is not null and closed_date is not null order by duration desc
+http://bokeh.pydata.org/en/latest/docs/user_guide/categorical.html#heat-maps

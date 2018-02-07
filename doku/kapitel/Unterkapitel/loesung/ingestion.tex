@@ -1,19 +1,24 @@
 \section{Data Ingestion}
 
-Wie schon in \fullref{chap:einleitung} erläutert haben wir uns dafür entschieden die NYC Open Data als Datenquelle zu nutzen.
-Genauer gesagt entschieden wir uns für den Datensatz mit dem Kürzel \textit{fhrw-4uyv}.
-Dieser Datensatz beinhaltet alle Service Request die seit 2011 von den Einwohner von New York City abgesetzt wurden sind.
-Beispielsweise kann mit diesem Datensatz herausgefunden werden wo welche Straßenlaternen in New York City ausgefallen sind
-oder in welchem Haus zu welcher Uhrzeit viel Party gemacht wurde da sich jemand über den Lärm beschwert hat.
+Wie in \fullref{chap:einleitung} erläutert wird für die Erstellung des Prototyps NYC Open Data als Datenquelle genutzt.
 
-In unserem Projekt beschaffen wir die Daten einmal über eine \ac{CSV} Datei die man sich bei NYC Open Data runter laden kann
-und direkt über die \ac{SODA} \ac{API} die einen eigenen Endpunkt anbietet um Request für die verschiedenen Datensätze abzusetzen.
-Die Data Ingestion mit der \ac{CSV} Datei setzte Julian Ruppel mit der Programmiersprache Java um und
-den kontinuierlichen Datenstrom über die Socrata \ac{API} wurde von Johannes Weber mit der Programmiersprache Python
+NYC Open Data bietet verschiedene Datenätze an um an die unterschiedlichsten Informationen aus New York zu gelangen
+wie \zb{} der Standort von öffentlichen Wi-Fi Hotspopts oder offene Stellenauschreibungen.\autocite{NYCOpenDataExample}
+
+Innerhalb dieses Projektes wird der Datensatz mit dem Kürzel \textit{fhrw-4uyv} verwendet.
+Er beinhält alle Service Request die seit 2011 von den Einwohner von New York City abgesetzt worden sind.
+
+Beispielsweise kann mit diesem Datensatz herausgefunden werden wo welche Straßenlaternen in New York City ausgefallen sind
+oder in welchem Haus zu welcher Uhrzeit gefeiert wurde da sich jemand über den Lärm beschwert hat.
+
+In unserem Projekt beschaffen wir die Daten über eine \ac{CSV} Datei die man sich bei NYC Open Data herunterladen kann
+und direkt über die \ac{SODA} \ac{API} die einen eigenen Endpunkt anbietet um die Service Requests abzufragen.
+
+Die Data Ingestion per \ac{CSV} Datei setzte Julian Ruppel mit der Programmiersprache Java um und
+den kontinuierlichen Datenstrom über die \ac{SODA} \ac{API} wurde von Johannes Weber mit der Programmiersprache Python
 ausgelesen.
 
-Beide Ansätze werden in diesem Kapitel beschrieben und miteinander verglichen.
+Beide Ansätze werden in diesem Kapitel beschrieben und anschließend miteinander verglichen.
 
 \input{kapitel/unterkapitel/loesung/ingestion/api}
 \input{kapitel/unterkapitel/loesung/ingestion/csv}
-
