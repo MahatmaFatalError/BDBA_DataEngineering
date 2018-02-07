@@ -1,27 +1,38 @@
 \chapter{Fazit}
 \label{chap:fazit}
 
-fazit in die loesung packen? Fazit = Fazit zum Vergleich der Tools und der eingesetzetn Architektur
+% fazit in die loesung packen? Fazit = Fazit zum Vergleich der Tools und der eingesetzetn Architektur
+% architektur gut weil
+% kafka hat ALLE Daten
+% postgres nur daten mit sinn!
+% macht kein sinn auf unserer architektur aber definitv big data
+% Obwohl unsere konkrete Implementierung
+% kafka connectoren wäre besser
+% jupyter vs. zeppelin feature vergleich
+% java vs. python vs. kafka stream vs. kafka connect
 
-architektur gut weil
-kafka hat ALLE Daten
-postgres nur daten mit sinn!
+Apache Kafka wird dazu verwendet um alle empfangenen Datensätz ungeachtet ihre Inhaltes in einem Topic zu speichern.
+Für dieses Projekt relevante Informationen wurden dann in die PostgreSQL Datenbank übertragen und konnten dann von dort mittels
+Apache Zeppelin und Jupyter angerufen werden.
 
-macht kein sinn auf unserer architektur aber definitv big data
+Aufgrund der limitiertes Grüße unseres Datensatzes und der überschaubaren Rechenleistung des verfügbaren Equipments in unserem Projekt
+hätte auf Apache Kafka verzichtet werden können, sodass die Daten direkt aus der \ac{API} in die Datenbank geschrieben werden
+ohne den \glqq Umweg\grqq{} über Apache Kafka.\\
+Jedoch in einem realen Szenario ist dieser Weg über Apache Kafka keineswegs falsch.\\
+Dieser Ansatz ermöglicht es zum Speicherplatz in der Datenbank zu sparen und trägt zu einer besseren Performance bei.
+Darüber hinaus kann mit der Verwendung von Kafka Streams das original Topic gezielter angepasst und/oder verändert werden.
 
+Kafka Streams ist eine Klient Bibliothek zur Verfügung gestellt von Confluent.
+Mit dieser Bibliothek können Anwendungen und Microservices erstellt werden, die eingehende Daten eines Topics
+auslesen, weiterverarbeiten und in zweites und vor allem separates Topic schreiben.
 
-Obwohl unsere konkrete Implementierung
-
-kafka connectoren wäre besser
-
-java vs. python vs. kafka stream vs. kafka connect
+Kafka Streams bieten den Vorteil, dass sie komplett in das vorhandenen Apache Kafka Ökosystem integriert,
+hoch skalierbar und fehlertolreant sind.\\
+Die dafür empfohlenen Programmiersprache von Konfluent ist Java,
+jedoch gibt es auch Implementierungen für andere Sprachen wie \zb{} Python.\autocite{KafkaStreams}
 
 Beim Vergleich der beiden Implementierung für jeweils Kafka Producer und Kafka Consumer fällt auf, dass die Java Implementierung eher mit low-level APIs operiert und damit mehr Aufwand für Konfiguration und Konvertierung von Daten anfällt, wohingegen Python durch Verwendung von Frameworks, die Komplexität stärker abstrahieren, und schlankerer Syntax mit deutlich weniger Codezeilen auskommt. Somit stellt Python für einen PoC bzw. Prototypen die schnellere Alternative da, wobei Java und sein feinerer Detailgrad eher in komplexeren Umgebungen seine Stärken ausspielen kann.\newline
 Aufgrund dessen, dass die Komplexität unserer Consumer und Producer insgesamt gering ist, da keine inhaltliche Transformation der Daten stattfindet, empfiehlt es sich für den produktiven Betrieb eher Kafka Connector zu evaluieren. Kafka Connector sind ein  Teil der Confluent-Plattform und bilden Connectoren zu gängigen Datenquellen und -senken. Dabei setzen sie auf deklarative Konfiguration anstatt individuelle und imperative Programmskripte. Zudem bieten sie Fehlertoleranz und bessere Skalierbarkeit als einzelne Consumer bzw. Producer Skripte.
-
-
-jupyter vs. zeppelin feature vergleich
-
 
 Obwohl Apache Zeppelin im Mai 2016 den Incubator Status verlies macht es im allgemeinen einen noch sehr unreifen und unfertigen Eindruck,
 was bei Versionsnummer 0.7 nichts überraschendes ist.
@@ -56,4 +67,4 @@ und sich die genutztes Charts kontinierlich anpassen - Stichwort: Monitoring - d
 Frage ob die virtuellen Notebooks dafür noch geeignet sind und nicht für dieses Szenario ein anderes oder weitere Tools benötigt werden.
 
 Die Erstellung eines virtuellen Notebooks das zu Monitoringzwecken genutzt werden kann birgt weitere interessante Ansätze und Überlegungen die
-jecok, mit Hinblick auf das Projektziel, nicht weiter verfolgt wurden.
+jedoch, mit Hinblick auf das Projektziel, nicht weiter verfolgt wurden.
