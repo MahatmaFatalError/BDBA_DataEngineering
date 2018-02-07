@@ -1,7 +1,5 @@
 package com.srh.bdba.dataengineering;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -18,7 +16,7 @@ public interface KafkaCommons {
 	static Properties loadProperties() throws IOException{
 		Properties prop = new Properties();
 
-		try (InputStream input = new FileInputStream("kafka_config.properties")) {
+		try (InputStream input = KafkaCommons.class.getResourceAsStream("/kafka_config.properties")) {
 			prop.load(input);
 			return prop;
 		}

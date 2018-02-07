@@ -1,5 +1,10 @@
 package com.srh.bdba.dataengineering;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -24,17 +29,19 @@ public class Main {
 
 		String csvFilePath = "/data/311_Service_Requests_from_2010_to_Present.csv";
 
-
 		MyConsumer consumer = new MyConsumer();
 
 		if (args != null && args.length > 0 && !StringUtils.isBlank(args[0])){
 			csvFilePath = args[0].trim();
 
+			Path path = Paths.get(csvFilePath);
+			if (!Files.isReadable(path)) {
+				throw new IOException(csvFilePath + " not found or not readable");
+			}
+			
 			if (args.length > 1){ // set PostgreSQL config
 				consumer = new MyConsumer(args[1].trim(),args[2].trim(),args[3].trim(),args[4].trim());
 			}
-
-
 		}
 
 		MyProducer producer = new MyProducer(csvFilePath);
