@@ -3,13 +3,10 @@ package com.srh.bdba.dataengineering;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.SQLType;
 import java.sql.Types;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +23,6 @@ import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.SqlTypeValue;
 import org.springframework.jdbc.core.metadata.TableMetaDataContext;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
@@ -46,11 +42,11 @@ public class MyConsumer implements Runnable {
 	private final String postgresUser;
 	private final String postgresUrl;
 
-	public MyConsumer(){
-		postgresPW = "postgres";
-		postgresUser = "postgres";
-		postgresUrl = "127.0.0.1:5432/bdba";
-		targetTable = "service_request";
+	public MyConsumer() throws IOException{
+		postgresPW = KafkaCommons.loadProperties().getProperty("POSTGRESQL_PW");
+		postgresUser = KafkaCommons.loadProperties().getProperty("POSTGRESQL_USER");
+		postgresUrl = KafkaCommons.loadProperties().getProperty("POSTGRESQL_URL");
+		targetTable = KafkaCommons.loadProperties().getProperty("POSTGRESQL_TARGET_TABLE");
 	}
 
 	/**
@@ -79,7 +75,7 @@ public class MyConsumer implements Runnable {
 		final List<String> tableColumns = findColumnsOfTable(template, targetTable);
 
 		try (final Consumer<Long, String> consumer = createConsumer()) {
-			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("TOPIC", KafkaCommons.TOPIC)});
+			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("KAFKA_TOPIC", KafkaCommons.TOPIC)});
 			consumer.subscribe(topics);
 
 			while (true) {
@@ -169,12 +165,12 @@ public class MyConsumer implements Runnable {
 
 	private Consumer<Long, String> createConsumer() throws IOException{
 		Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("KAFKA_BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group");
-		return new KafkaConsumer<Long, String>(props);
+		return new KafkaConsumer<>(props);
 	}
 
 	@Override
