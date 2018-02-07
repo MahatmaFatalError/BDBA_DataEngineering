@@ -23,9 +23,9 @@ CREATE TABLE public.service_request
     due_date timestamp with time zone,
     borough character(100) COLLATE pg_catalog."default",
     resolution_description text COLLATE pg_catalog."default",
-    unique_key character(255) COLLATE pg_catalog."default",
+    unique_key character(255) COLLATE pg_catalog."default" NOT NULL,
     closed_date timestamp with time zone,
-    CONSTRAINT service_request_unique_key_key UNIQUE (unique_key)
+    CONSTRAINT unique_key_primary PRIMARY KEY (unique_key)
 )
 WITH (
     OIDS = FALSE
