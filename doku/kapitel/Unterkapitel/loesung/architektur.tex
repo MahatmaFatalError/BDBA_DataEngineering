@@ -3,22 +3,22 @@
 Grundsätzlich lassen sich zwei unterschiedliche Architekturansätze im Bereich Data Streaming unterscheiden:
 
 \begin{description}
-\item [Lambda Architektur:] Benannt nach dem griechischen $\lambda$ zeichnet sich dieser Ansatz dadurch aus, dass die Streaming Daten zweigleisig verarbeitet werden. Zum einen wird der Datenstrom direkt in einen häufig auf In-Memory Technologie basierenden \textit{Speed Layer} geleitet, der diese in Echtzeit verarbeitet und dem \textit{Serving Layer} zur Verfügung stellt. Da Streams per Definition unendlich und der Speed Layer teuer und physikalisch endlich ist, wird der Stream von \textit{Ingestion Layer} parallel in den \textit{Batch Layer} geleitet. Dieser speichert zunächst die Daten persistent und startet nach einem fest definierten Intervall einen Batch-Job um die bis dahin angelaufenen Daten zu verarbeiten und zum Serving Layer zu übertragen. Es ist also die nicht zu unterschätzende  Verantwortung des Serving Layers, die aggregierten Bestandsdaten aus dem Batch Layer mit den Echtzeitdaten des Speed Layers, die noch nicht vom Batch Layer verarbeitet worden sind, abzumischen.
+\item [Lambda Architektur:] Benannt nach dem griechischen $\lambda$ zeichnet sich dieser Ansatz dadurch aus, dass die Streaming Daten zweigleisig verarbeitet werden. Zum einen wird der Datenstrom direkt in einen häufig auf In-Memory Technologie basierenden \textit{Speed Layer} geleitet, der diese in Echtzeit verarbeitet und dem \textit{Serving Layer} zur Verfügung stellt. Da Streams per Definition unendlich und der Speed Layer teuer und physikalisch endlich ist, wird der Stream von \textit{Ingestion Layer} parallel in den \textit{Batch Layer} geleitet. Dieser speichert zunächst die Daten persistent und startet nach einem fest definierten Intervall einen Batch-Job um die bis dahin angelaufenen Daten zu verarbeiten und zum Serving Layer zu übertragen. Es ist also die nicht zu unterschätzende  Verantwortung des Serving Layers, die aggregierten Bestandsdaten aus dem Batch Layer mit den Echtzeitdaten des Speed Layers, die noch nicht vom Batch Layer verarbeitet worden sind, abzumischen.\autocite{lambda-architecture} \autocite{jaxkappa} 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{berle_lambda-architektur_3.jpg}
-	\caption[Schema der $\lambda$ Architektur]{Schema der $\lambda$ Architektur\autocite{TODO}}
+	\caption[Schema der $\lambda$ Architektur]{Schema der $\lambda$ Architektur\autocite{jaxkappa}}
 	\label{fig:KafkaArchitecture}
 \end{figure}
 
 
-\item [Kappa Architektur:] Dieser von Confluent Mitgründer und CEO Jay Kreps entworfene Ansatz verzichtet auf eine Batch-Verarbeitung und kommt somit mit lediglich mit \textit{Ingestion-}, \textit{Speed-} und \textit{Serving-Layer} aus. Damit spart man sich Entwicklung und Betrieb von zwei separaten Schichten und das aufwändige Abmischen von Batch-Daten mit Live-Daten im \textit{Serving-Layer}. Voraussetzung ist allerdings, dass der \textit{Ingestion-Layer} nicht nur Daten volatil durchreicht sondern vielmehr als \textbf{Puffer} die Rohdaten persistent im \textit{Master-Dataset} vorhält, um im Falle einer neuen, noch nicht vorberechneten Anfrage oder Änderung im \textit{Speed-Layer} die Rohdaten erneut bereit zu stellen. Um ein korrektes Replay der Nachrichten sicherzustellen beruht der Puffer auf einem kanonisches Log, in dem lediglich Nachrichten unverändert hinzugefügt, aber bereits gespeicherte Nachrichten nicht mehr verändert oder in ihrer Reihenfolge verschoben werden können. Um gleichzeitig Nähe als auch Abgrenzung zur $\lambda$ Architektur zu veranschaulichen wurde dieser Ansatz nach dem griechischen $\kappa$ benannt.
+\item [Kappa Architektur:] Dieser von Confluent Mitgründer und CEO Jay Kreps entworfene Ansatz verzichtet auf eine Batch-Verarbeitung und kommt somit mit lediglich mit \textit{Ingestion-}, \textit{Speed-} und \textit{Serving-Layer} aus. Damit spart man sich Entwicklung und Betrieb von zwei separaten Schichten und das aufwändige Abmischen von Batch-Daten mit Live-Daten im \textit{Serving-Layer}. Voraussetzung ist allerdings, dass der \textit{Ingestion-Layer} nicht nur Daten volatil durchreicht sondern vielmehr als \textbf{Puffer} die Rohdaten persistent im \textit{Master-Dataset} vorhält, um im Falle einer neuen, noch nicht vorberechneten Anfrage oder Änderung im \textit{Speed-Layer} die Rohdaten erneut bereit zu stellen. Um ein korrektes Replay der Nachrichten sicherzustellen beruht der Puffer auf einem kanonisches Log, in dem lediglich Nachrichten unverändert hinzugefügt, aber bereits gespeicherte Nachrichten nicht mehr verändert oder in ihrer Reihenfolge verschoben werden können. Um gleichzeitig Nähe als auch Abgrenzung zur $\lambda$ Architektur zu veranschaulichen wurde dieser Ansatz nach dem griechischen $\kappa$ benannt.\autocite{Kappa-Architektur} {Kappa-Architektur2}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{berle_lambda-architektur_4.jpg}
-	\caption[Schema der $\kappa$ Architektur]{Schema der $\kappa$ Architektur\autocite{TODO}}
+	\caption[Schema der $\kappa$ Architektur]{Schema der $\kappa$ Architektur\autocite{jaxkappa}}
 	\label{fig:KappaArchitecture}
 \end{figure}
 
