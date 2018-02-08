@@ -5,7 +5,7 @@
 CREATE TABLE public.service_request
 (
     unique_key character(255)  NOT NULL,
-	created_date timestamp without time zone,
+    created_date timestamp without time zone,
     agency_name character(255)  ,
     complaint_type character(255)  ,
     descriptor character(255)  ,

@@ -12,7 +12,7 @@ In der Datenbanktabelle \code{service\_request} wurden diese Felder außer Acht 
 
 \fullref{lst:databasesql} zeigt das \ac{SQL} Statement um die Tabelle \code{service\_request} in der Datenbank anzulegen.
 
-\lstinputlisting[label=lst:databasesql,caption=\ac{SQL} Skript für Datenbanktabelle, language=SQL, firstline=5, lastline=27]{../db/table.sql}
+\lstinputlisting[label=lst:databasesql,caption=\ac{SQL} Skript für Datenbanktabelle, language=SQL, firstline=5, lastline=29]{../db/table.sql}
 
 In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
 eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
@@ -71,7 +71,7 @@ auf die Keys des \ac{JSON} zugegriffen, den zugehörigen Wert ausgelesen und als
 \subsubsection{Java Quellcode Programmablauf}
 Auch für den Consumer gibt es eine alternative Implementierung in Java.
 Diese findet sich in \code{com.srh.bdba.dataengineering.MyConsumer}.
-Der Programmablauf ist ähnlich zu der Python Implementierung, weshalb an dieser Stelle auf Codelistings im Anhang TODO verwiesen wird.
+Der Programmablauf ist ähnlich zu der Python Implementierung, weshalb an dieser Stelle auf Codelistings im Anhang \ref{lst:MyConsumer} verwiesen wird.
 Kurz zusammengefasst wird ein \code{KafkaConsumer<Long, String>} konfiguriert und pro 100 Millisekunden am Kafka-Cluster nachgefragt, ob es neue \code{ConsumerRecord <Long, String>} für das entsprechende Topic gibt.
 Falls dem so ist wird die \ac{JSON} Nachricht aus dem \code{ConsumerRecord<Long, String>} ausgepackt und per \code{PreparedStatement} über \code{JDBC} in die PostgreSQL Tabelle eingefügt.
 \newpage
