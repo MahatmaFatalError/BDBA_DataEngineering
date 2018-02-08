@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Reads JSON from a Kafka Topic and stores the data in a postgres database table
+ * 
  * @author jruppel
  *
  */
@@ -42,7 +43,7 @@ public class MyConsumer implements Runnable {
 	private final String postgresUser;
 	private final String postgresUrl;
 
-	public MyConsumer() throws IOException{
+	public MyConsumer() throws IOException {
 		postgresPW = KafkaCommons.loadProperties().getProperty("POSTGRESQL_PW");
 		postgresUser = KafkaCommons.loadProperties().getProperty("POSTGRESQL_USER");
 		postgresUrl = KafkaCommons.loadProperties().getProperty("POSTGRESQL_URL");
@@ -56,13 +57,12 @@ public class MyConsumer implements Runnable {
 	 * @param dbUser
 	 * @param dbPassword
 	 */
-	public MyConsumer(String dbURL, String tableName, String dbUser, String dbPassword){
+	public MyConsumer(String dbURL, String tableName, String dbUser, String dbPassword) {
 		this.postgresUrl = dbURL;
 		this.targetTable = tableName;
 		this.postgresUser = dbUser;
 		this.postgresPW = dbPassword;
 	}
-
 
 	public static void main(String[] args) throws Exception {
 		new MyConsumer().runConsumer();
@@ -75,14 +75,15 @@ public class MyConsumer implements Runnable {
 		final List<String> tableColumns = findColumnsOfTable(template, targetTable);
 
 		try (final Consumer<Long, String> consumer = createConsumer()) {
-			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("KAFKA_TOPIC", KafkaCommons.TOPIC)});
+			List<String> topics = Arrays.asList(new String[] { KafkaCommons.loadProperties().getProperty("KAFKA_TOPIC", KafkaCommons.TOPIC) });
 			consumer.subscribe(topics);
 
 			while (true) {
 				ConsumerRecords<Long, String> records = consumer.poll(100);
 
 				for (ConsumerRecord<Long, String> record : records) {
-					System.out.printf("Received Message topic =%s, partition =%s, offset = %d, key = %s, value = %s\n", record.topic(), record.partition(), record.offset(), record.key(), record.value());
+					System.out.printf("Received Message topic =%s, partition =%s, offset = %d, key = %s, value = %s\n", record.topic(), record.partition(), record.offset(), record.key(),
+							record.value());
 
 					JsonNode jsonNode = objectMapper.readTree(record.value());
 
@@ -106,30 +107,27 @@ public class MyConsumer implements Runnable {
 								ps.setString(2, (String) result.get("Agency Name"));
 								ps.setString(3, (String) result.get("Complaint Type"));
 								ps.setString(4, (String) result.get("Descriptor"));
-								
-								if (StringUtils.isBlank((String)result.get("Longitude"))) {
+
+								if (StringUtils.isBlank((String) result.get("Longitude"))) {
 									ps.setNull(5, Types.NULL);
 								} else {
-									ps.setFloat(5, Float.valueOf((String) result.get("Longitude")));									
+									ps.setFloat(5, Float.valueOf((String) result.get("Longitude")));
 								}
-								
-								if (StringUtils.isBlank((String)result.get("Latitude"))) {
+
+								if (StringUtils.isBlank((String) result.get("Latitude"))) {
 									ps.setNull(6, Types.NULL);
 								} else {
-								
+
 									ps.setFloat(6, Float.valueOf((String) result.get("Latitude")));
 								}
-								
+
 								ps.setString(7, (String) result.get("Agency"));
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 					});
-
 				}
-
 				consumer.commitSync();
 			}
 		}
@@ -159,11 +157,10 @@ public class MyConsumer implements Runnable {
 		ds.setUrl("jdbc:postgresql://" + postgresUrl);
 		ds.setUsername(postgresUser);
 		ds.setPassword(postgresPW);
-
 		return new JdbcTemplate(ds);
 	}
 
-	private Consumer<Long, String> createConsumer() throws IOException{
+	private Consumer<Long, String> createConsumer() throws IOException {
 		Properties props = new Properties();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("KAFKA_BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
@@ -178,10 +175,7 @@ public class MyConsumer implements Runnable {
 		try {
 			runConsumer();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
 }

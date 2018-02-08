@@ -20,15 +20,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Reads a given CSV file line wise and writes the records as json to a Kafka Topic
+ * 
  * @author jruppel
  *
  */
 public class MyProducer implements Runnable {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	private final String filepath;
-	
+
 	public MyProducer(String filepath) {
 		this.filepath = filepath;
 	}
@@ -37,7 +38,7 @@ public class MyProducer implements Runnable {
 
 		Reader in = new FileReader("/data/311_Service_Requests_from_2010_to_Present.csv");
 		Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-		
+
 		new MyProducer("").runProducer(records);
 
 	}
@@ -48,17 +49,16 @@ public class MyProducer implements Runnable {
 
 			for (final CSVRecord csvRecord : records) {
 				String json = objectMapper.writeValueAsString(csvRecord.toMap());
-				final ProducerRecord<Long, String> record = new ProducerRecord<>(KafkaCommons.loadProperties().getProperty("KAFKA_TOPIC", KafkaCommons.TOPIC), Long.parseLong(csvRecord.get("Unique Key")), json);
+				final ProducerRecord<Long, String> record = new ProducerRecord<>(KafkaCommons.loadProperties().getProperty("KAFKA_TOPIC", KafkaCommons.TOPIC),
+						Long.parseLong(csvRecord.get("Unique Key")), json);
 				Thread.sleep(new Random().nextInt(2000));
 				RecordMetadata metadata = producer.send(record).get();
 				System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d)\n", record.key(), record.value(), metadata.partition(), metadata.offset());
-
 			}
-
 		}
 	}
 
-	private Producer<Long, String> createProducer() throws IOException{
+	private Producer<Long, String> createProducer() throws IOException {
 		Properties props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaCommons.loadProperties().getProperty("KAFKA_BOOTSTRAP_SERVERS", KafkaCommons.BOOTSTRAP_SERVERS));
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaCSVProducer");
@@ -71,16 +71,10 @@ public class MyProducer implements Runnable {
 	public void run() {
 		try {
 			Reader in = new FileReader(filepath);
-			Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);		
-			
+			Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
 			runProducer(records);
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 		}
-		
 	}
-
 }
