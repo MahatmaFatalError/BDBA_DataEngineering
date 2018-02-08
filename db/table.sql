@@ -4,33 +4,29 @@
 
 CREATE TABLE public.service_request
 (
-    created_date timestamp with time zone,
-    agency_name character(255) COLLATE pg_catalog."default",
-    complaint_type character(255) COLLATE pg_catalog."default",
-    descriptor character(255) COLLATE pg_catalog."default",
+    unique_key character(255)  NOT NULL,
+	created_date timestamp without time zone,
+    agency_name character(255)  ,
+    complaint_type character(255)  ,
+    descriptor character(255)  ,
     longitude double precision,
     latitude double precision,
-    agency character(255) COLLATE pg_catalog."default",
-    location_type character(255) COLLATE pg_catalog."default",
-    incident_zip character(10) COLLATE pg_catalog."default",
-    incident_address character(255) COLLATE pg_catalog."default",
-    street_name character(255) COLLATE pg_catalog."default",
-    cross_street_1 character(255) COLLATE pg_catalog."default",
-    cross_street_2 character(255) COLLATE pg_catalog."default",
-    address_type character(255) COLLATE pg_catalog."default",
-    city character(255) COLLATE pg_catalog."default",
-    status character(50) COLLATE pg_catalog."default",
-    due_date timestamp with time zone,
-    borough character(100) COLLATE pg_catalog."default",
-    resolution_description text COLLATE pg_catalog."default",
-    unique_key character(255) COLLATE pg_catalog."default" NOT NULL,
-    closed_date timestamp with time zone,
+    agency character(255)  ,
+    location_type character(255)  ,
+    incident_zip character(10)  ,
+    incident_address character(255)  ,
+    street_name character(255)  ,
+    cross_street_1 character(255)  ,
+    cross_street_2 character(255)  ,
+    address_type character(255)  ,
+    city character(255)  ,
+    status character(50)  ,
+    due_date timestamp without time zone,
+    borough character(100)  ,
+    resolution_description text  ,
+    closed_date timestamp without time zone,
     CONSTRAINT unique_key_primary PRIMARY KEY (unique_key)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
 
 ALTER TABLE public.service_request
     OWNER to postgres;
