@@ -1,4 +1,4 @@
-\subsection{Data Ingestion via \acs{SODA} Schnittstelle}
+\subsection{Data Ingestion via \acs{SODA} Schnittstelle}\label{subsec:api}
 
 Folgende Python Bibliotheken wurden genutzt um die Implementierung des Producers zu unterstützen:
 
@@ -9,10 +9,10 @@ Folgende Python Bibliotheken wurden genutzt um die Implementierung des Producers
 
 Im Kern basiert \code{sodapy} auf dem \code{Request} Paket von Python und vereinfacht das Absenden von Anfragen an die \ac{SODA} \ac{API}.\autocite{Sodapy}
 
-\code{kafka-python} ist ein offiziell unterstützter Klient für Apache Kafka in der Programmiersprache Python und basiert lose auf der offiziellen Java Implementierung des Kafka Klients.\autocite{KafkaPython}
-Gegenüber dem offiziellen Paket \code{confluent-kafka-python} ist \code{kafka-python} komplett in Python geschrieben und somit entfällt die Installation des Pakets \code{librdkafka },
+\code{kafka-python} ist ein offiziell unterstützter Klient für Apache Kafka in der Programmiersprache Python und basiert grob auf der offiziellen Java Implementierung des Kafka Klients.\autocite{KafkaPython}
+Gegenüber dem offiziellen Paket \code{confluent-kafka-python} ist \code{kafka-python} komplett in Python geschrieben und somit entfällt die Installation des Pakets \code{librdkafka},
 das bei dem offiziellen Klient von Confluent noch installiert werden muss.\autocite{KafkaClients}
-
+\newpage
 \subsubsection{Python Quellcode Programmablauf}
 Der Producer besteht insgesamt aus zwei Python Skripten:
 
@@ -40,13 +40,13 @@ Da der Abruf von einer solch großen Menge an Daten über die API eine sehr hohe
 ein Paging entwickelt.
 
 Durch die feste Angabe eines Limits von 10.000 wird sichergestellt, dass ein Request an die \ac{SODA} \ac{API} nur maximal 10.000
-Datensätze liefern kann und der Algorithmus führt so lange Requests an die \ac{API} aus bis der gewünschte Zeitraum des Users komplett empfangen und
+Datensätze liefern kann und der Algorithmus führt so lange Requests an die \ac{API} aus bis der gewünschte Zeitraum  komplett empfangen und
 die Request an Apache Kafka gesendet wurden.
 
-Vorgegeben durch das Paket \code{kafka-python} können die Einträge eines Topics nur als byte String abgelegt werden.
-Aus diesem Grund wird der empfangende Datensatz zuerst in ein byte string umgewandelt und dann an Apache Kafka gesendet.
+Vorgegeben durch das Paket \code{kafka-python} können die Einträge eines Topics nur als Byte String abgelegt werden.
+Aus diesem Grund wird der empfangende Datensatz zuerst in ein Byte String umgewandelt und dann an Apache Kafka gesendet.
 
-Folgendes Code Snippet zeigt den Algorithmus um das Paging zu realisieren.
+\fullref{lst:csp} zeigt den Algorithmus um das Paging zu realisieren.
 
 Mit Hilfe des SodaHelpers werden zunächst die Datensätze von der \ac{API} - unter Berücksichtigung des Limits, des Anfangs- und Enddatums geholt.
 \\
@@ -58,4 +58,4 @@ Wenn also das Limit erreicht wurde wird das Datum des letzten Datensatzes als ne
 Dies geschieht solange die Anzahl der empfanenen Datensätze nicht dem Limit entsprechen
 oder die verwendeten Anfangs- und Enddatumswerte identisch sind.
 
-\lstinputlisting[language=Python, caption=Code Snippet aus Producer.py, firstline=23, lastline=52]{../python/Producer.py}
+\lstinputlisting[label=lst:csp,language=Python, caption=Code Snippet aus Producer.py, firstline=23, lastline=52]{../python/Producer.py}

@@ -13,7 +13,7 @@ Grundsätzlich lassen sich zwei unterschiedliche Architekturansätze im Bereich 
 \end{figure}
 
 
-\item [Kappa Architektur:] Dieser von Confluent Mitgründer und CEO Jay Kreps entworfene Ansatz verzichtet auf eine Batch-Verarbeitung und kommt somit mit lediglich mit \textit{Ingestion-}, \textit{Speed-} und \textit{Serving-Layer} aus. Damit spart man sich Entwicklung und Betrieb von zwei separaten Schichten und das aufwändige Abmischen von Batch-Daten mit Live-Daten im \textit{Serving-Layer}. Voraussetzung ist allerdings, dass der \textit{Ingestion-Layer} nicht nur Daten volatil durchreicht sondern vielmehr als \textbf{Puffer} die Rohdaten persistent im \textit{Master-Dataset} vorhält, um im Falle einer neuen, noch nicht vorberechneten Anfrage oder Änderung im \textit{Speed-Layer} die Rohdaten erneut bereit zu stellen. Um ein korrektes Replay der Nachrichten sicherzustellen beruht der Puffer auf einem kanonisches Log, in dem lediglich Nachrichten unverändert hinzugefügt, aber bereits gespeicherte Nachrichten nicht mehr verändert oder in ihrer Reihenfolge verschoben werden können. Um gleichzeitig Nähe als auch Abgrenzung zur $\lambda$ Architektur zu veranschaulichen wurde dieser Ansatz nach dem griechischen $\kappa$ benannt.\autocite{Kappa-Architektur} {Kappa-Architektur2}
+\item [Kappa Architektur:] Dieser von Confluent Mitgründer und CEO Jay Kreps entworfene Ansatz verzichtet auf eine Batch-Verarbeitung und kommt somit mit lediglich mit \textit{Ingestion-}, \textit{Speed-} und \textit{Serving-Layer} aus. Damit spart man sich Entwicklung und Betrieb von zwei separaten Schichten und das aufwändige Abmischen von Batch-Daten mit Live-Daten im \textit{Serving-Layer}. Voraussetzung ist allerdings, dass der \textit{Ingestion-Layer} nicht nur Daten volatil durchreicht sondern vielmehr als \textbf{Puffer} die Rohdaten persistent im \textit{Master-Dataset} vorhält, um im Falle einer neuen, noch nicht vorberechneten Anfrage oder Änderung im \textit{Speed-Layer} die Rohdaten erneut bereit zu stellen. Um ein korrektes Replay der Nachrichten sicherzustellen beruht der Puffer auf einem kanonisches Log, in dem lediglich Nachrichten unverändert hinzugefügt, aber bereits gespeicherte Nachrichten nicht mehr verändert oder in ihrer Reihenfolge verschoben werden können. Um gleichzeitig Nähe als auch Abgrenzung zur $\lambda$ Architektur zu veranschaulichen wurde dieser Ansatz nach dem griechischen $\kappa$ benannt.\autocite{Kappa-Architektur} \autocite{Kappa-Architektur2}
 
 \begin{figure}[h]
 	\centering
@@ -24,11 +24,11 @@ Grundsätzlich lassen sich zwei unterschiedliche Architekturansätze im Bereich 
 
 \end{description}
 
-Der erste Lösungsentwurf für unser Problem orientiert sich an der Lambda Architektur. Weil die von uns gewählte Datenquelle kein Stream sondern ein statisches, online abrufbares Datenset ist, sieht unser Lösungsansatz vor, mittels eines Kafka Producers \textbf{(1)} die Online-Daten zu laden und sukzessive in einen Kafka Topic zu schreiben, um somit eine Art Pseudo-Stream zu imitieren. Da das Web-API ohnehin \textit{Paging} über das Datenset erlaubt sollte die Implementierung nicht sonderlich kompliziert sein.
+Der erste Lösungsentwurf für unser Problem orientiert sich an der Lambda Architektur. Weil die von uns gewählte Datenquelle kein Stream sondern ein statisches, online abrufbares Datenset ist, sieht unser Lösungsansatz vor, mittels eines Kafka Producers \textbf{(1)} die Online-Daten zu laden und sukzessive in einen Kafka Topic zu schreiben, um somit eine Art Pseudo-Stream zu imitieren.
 
 In Schritt \textbf{(2)} sammelt ein Consumer zeitgesteuert die Nachrichten des Kafka Topics ein und schreibt die Daten per SQL \code{INSERT} \footnote{Um die IO-Last der Datenbankverbindung gering zu halten sollte die Daten per BULK-INSERT erfolgen} in eine relationale Datenbanktabelle. Auf dieser Tabelle horcht ein \code{AFTER INSERT TRIGGER} \textbf{(3)}, der, sobald Daten in die Tabelle geschrieben wird, eine \code{FUNCTION} bzw. \code{STORED PROCEDURE} aufruft um Aggregate über die neuen Datensätze zu berechnen und in einer separaten Tabelle abzuspeichern bzw. mit bereits bestehenden Aggregaten zu verrechnen. Danach kann die Tabelle mit den Rohdaten theoretisch geleert werden, spätestens jedoch sobald der verfügbare Speicherplatz zu neige geht\footnote{Alternativ könnte man einen \code{INSTEAD OF TRIGGER} benutzen und ausschließlich Aggregate permanent zu speichern}.
 
-Parallel dazu konsumiert ein in Zeppelin- oder Jupyter-Notebook eingebetteter Consumer\footnote{Apache Spark liefert bereits eine Kafka-Consumer Bibliothek} die Rohdaten aus dem gleichen Topic \textbf{(4)}.
+Parallel dazu konsumiert ein in Zeppelin/Jupyter Notebook eingebetteter Consumer\footnote{Apache Spark liefert bereits eine Kafka Consumer Bibliothek} die Rohdaten aus dem gleichen Topic \textbf{(4)}.
 
 \begin{figure}[h] %http://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
 	\centering
@@ -37,10 +37,10 @@ Parallel dazu konsumiert ein in Zeppelin- oder Jupyter-Notebook eingebetteter Co
 	\label{fig:OurLampdaArchitecture}
 \end{figure}
 
-Somit wären im Auswertungs-Dashboard \textbf{(5)} sowohl Charting auf Live-Daten als auch über aggregierte Bestandsdaten aus PostgreSQL, die ggf. aus Speicherplatzgründen gar nicht mehr in Kafka vorgehalten werden können, möglich. Der Serving Layer würde in diesem Fall in die Auswertungskomponente fallen.
+Somit wären im Auswertungs-Dashboard \textbf{(5)} sowohl Charting auf Live Daten als auch über aggregierte Bestandsdaten aus PostgreSQL, die ggf. aus Speicherplatzgründen gar nicht mehr in Kafka vorgehalten werden können, möglich. Der Serving Layer würde in diesem Fall in die Auswertungskomponente fallen.
 
 
-Da allerdings mit diesem Ansatz die bereits erörterten Nachteile der Lambda Architektur einhergehen und wir in unserem Beispiel keinen unendlichen Stream sondern eine endliche Datenmenge haben, die ganzheitlich in den Kafka-Puffer passt, haben wir den Lösungsentwurf überarbeitet und an die einfachere Kappa-Architektur angeglichen.
+Da allerdings mit diesem Ansatz die bereits erörterten Nachteile der Lambda Architektur einhergehen und wir in unserem Beispiel keinen unendlichen Stream sondern eine endliche Datenmenge haben, die ganzheitlich in den Kafka Puffer passt, haben wir den Lösungsentwurf überarbeitet und an die einfachere Kappa Architektur angeglichen.
 
 \begin{figure}[h] %http://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
 	\centering
@@ -49,7 +49,7 @@ Da allerdings mit diesem Ansatz die bereits erörterten Nachteile der Lambda Arc
 	\label{fig:OurKappaArchitecture}
 \end{figure}
 
-Schritt \textbf{(1)} bleibt unverändert, wohingegen in Schritt \textbf{(2)} nur noch ein einziger Consumer die Nachrichten des Kafka Topics subskribiert und direkt in eine Datenbanktabelle weiter leitet. Der zweite Consumer sowie Voraggregationen in PostgreSQL entfallen.  Somit muss in den Zeppelin- bzw. Jupyter-Notebooks \textbf{(3)} auf nur eine Datenquelle zugegriffen werden, um die Daten auszuwerten und zu visualisieren.
+Schritt \textbf{(1)} bleibt unverändert, wohingegen in Schritt \textbf{(2)} nur noch ein einziger Consumer die Nachrichten des Kafka Topics subskribiert und direkt in eine Datenbanktabelle weiter leitet. Der zweite Consumer sowie Voraggregationen in PostgreSQL entfallen.  Somit muss in dem Zeppelin/Jupyter Notebook \textbf{(3)} auf nur eine Datenquelle zugegriffen werden, um die Daten auszuwerten und zu visualisieren.
 %Warum Kappa? Daten sind endlich aber ausreichend für unsere Bedürfnisse.Haben eh nur Pseudostream.
 
 

@@ -1,4 +1,4 @@
-\section{Data Storage}
+\section{Data Storage}\label{sec:storage}
 Apache Kafka wird verwendet um den kompletten Datensatz eines Service Requests abzuspeichern.
 
 Ein Consumer liest die Daten von Apache Kafka aus und speichert die relevanten Attribute eines Datensatzes in der PostgreSQL Datenbank.
@@ -10,9 +10,9 @@ Werten belegt sind.
 
 In der Datenbanktabelle \code{service\_request} wurden diese Felder außer Acht gelassen.
 
-\fullref{lst:databasesql} zeigt das \ac{SQL} Statement um die Tabelle \code{service\_request} in der Datenbank anzulegen.
+\fullref{lst:databasesql} zeigt das \ac{DDL} Statement um die Tabelle \code{service\_request} in der Datenbank anzulegen.
 
-\lstinputlisting[label=lst:databasesql,caption=\ac{SQL} Skript für Datenbanktabelle, language=SQL, firstline=5, lastline=29]{../db/table.sql}
+\lstinputlisting[label=lst:databasesql,caption=\ac{DDL} Skript für Datenbanktabelle, language=SQL, firstline=5, lastline=29]{../db/table.sql}
 
 In der offiziellen Dokumentation des Datensatzes werden die einzelnen Attribute
 eines Service Requests genau beschrieben und deren technische Bezeichner aufgelistet.
@@ -20,7 +20,7 @@ eines Service Requests genau beschrieben und deren technische Bezeichner aufgeli
 
 Die Attribute der Tabelle \code{service\_request} sind identisch zu den
 Bezeichnern des original \ac{SODA} Datensatzes.
-
+\newpage
 Um das Handling mit Apache Kafka zu vereinfachen wurden zwei Python
 Bibliotheken installiert.
 Diese sind:
@@ -37,7 +37,7 @@ Durch den Einsatz von \code{sqlalchemy} ist es möglich auf die Datenbank und de
 und die Ausführung von \ac{SQL} Statements wird vereinfacht bzw. durch Klassenmethoden abstrahiert.
 
 \subsubsection{Python Quellcode Programmablauf}
-Neben den verwendeten Bibliotheken besteht derConsumer aus zwei Python Skripten.
+Neben den verwendeten Bibliotheken besteht der Consumer aus zwei Python Skripten.
 
 \begin{itemize}
   \item \code{DBHelper.py}
@@ -47,7 +47,7 @@ Neben den verwendeten Bibliotheken besteht derConsumer aus zwei Python Skripten.
 Während sich das \code{consumer} Skript um das Auslesen eines Kafka Topics kümmert ist die \code{DBHelper} Klasse
 für die Verbindung zu der Datenbank zuständig, liest Tabellenspalten aus und speichert einen Datensatz in der Tabelle.
 
-Nachfolgend die Code Snippet der Consumer Klasse.
+Nachfolgend das Code Snippet der Consumer Klasse.
 
 \lstinputlisting[caption=Code Snippet aus Consumer.py, language=Python, firstline=13, lastline=27]{../python/Consumer.py}
 
@@ -56,16 +56,14 @@ aufgebaut und der \code{KafkaConsumer} stellt eine Verbindung mit dem Apache Kaf
 Server bzw. dem Topic \code{ServiceRequests} her.
 (Zeile 1 - 7)
 
-Sobald von seitens des Producers ein neuer Datensatz in das Topic \code{ServiceRequests} geschrieben wird,
-wird der Datensatz ausgelesen in ein \ac{JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
-und in ein temporäres Dictionary geschrieben.\\
-Dieses Dictionary wird abschließend mit Hilfe des \code{DBHelper} Skripts in die
+Sobald der Producers ein neuer Datensatz in das Topic \code{ServiceRequests} schreibt,
+wird der Datensatz ausgelesen, in ein \ac{JSON} umgewandelt, die benötigten Attribute aus dem \ac{JSON} gelesen
+und in ein temporäres \code{Dictionary} geschrieben.\\
+Dieses \code{Dictionary} wird abschließend mit Hilfe des \code{DBHelper} Skripts in die
 Datenbanktabelle geladen.
 
-Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes identisch.
-
-Mit diesem kleinen \glqq Kniff\grqq{} kann mit Hilfe der Namen der Tabellenspalten
-auf die Keys des \ac{JSON} zugegriffen, den zugehörigen Wert ausgelesen und als neuen Wert für das temporäre Dictionary genutzt werden.
+Wie eingangs erwähnt bezeichneten wir die Attribute der Datenbanktabelle und des \ac{SODA} Datensatzes identisch. Mit diesem kleinen \glqq Kniff\grqq{} kann mit Hilfe der Namen der Tabellenspalten
+auf die Keys des \ac{JSON} zugegriffen, den zugehörigen Wert ausgelesen und als neuen Wert für das \code{Dictionary} genutzt werden.
 (Zeile 8 - 15)
 
 \subsubsection{Java Quellcode Programmablauf}

@@ -1,24 +1,21 @@
 \section{Data Ingestion}
 
-Wie in \fullref{chap:einleitung} erläutert wird für die Erstellung des Prototyps NYC Open Data als Datenquelle genutzt.
+Wie in \fullref{chap:einleitung} erläutert, wird für die Erstellung des Prototyps NYC Open Data als Datenquelle genutzt.
 
 NYC Open Data bietet verschiedene Datenätze an um an die unterschiedlichsten Informationen aus New York zu gelangen
 wie \zb{} der Standort von öffentlichen Wi-Fi Hotspopts oder offene Stellenauschreibungen.\autocite{NYCOpenDataExample}
 
 Innerhalb dieses Projektes wird der Datensatz mit dem Kürzel \textit{fhrw-4uyv} verwendet.
-Er beinhält alle Service Request die seit 2011 von den Einwohner von New York City abgesetzt worden sind.
+Er beinhält alle Service Request die seit 2011 von den Einwohner von New York City abgesetzt worden sind. Wir beschaffen die Daten über eine \ac{CSV} Datei die man sich bei NYC Open Data herunterladen kann und direkt über die \ac{SODA} \ac{API}, welche einen eigenen Endpunkt anbietet um die Service Requests abzufragen.
 
 Beispielsweise kann mit diesem Datensatz herausgefunden werden wo welche Straßenlaternen in New York City ausgefallen sind
-oder in welchem Haus zu welcher Uhrzeit gefeiert wurde da sich jemand über den Lärm beschwert hat.
+oder in welchem Haus zu welcher Uhrzeit gefeiert wurde, da sich jemand über den Lärm beschwert hat.
 
-In unserem Projekt beschaffen wir die Daten über eine \ac{CSV} Datei die man sich bei NYC Open Data herunterladen kann
-und direkt über die \ac{SODA} \ac{API} die einen eigenen Endpunkt anbietet um die Service Requests abzufragen.
+
 
 Die Data Ingestion per \ac{CSV} Datei setzte Julian Ruppel mit der Programmiersprache Java um und
 den kontinuierlichen Datenstrom über die \ac{SODA} \ac{API} wurde von Johannes Weber mit der Programmiersprache Python
-ausgelesen.
-
-Beide Ansätze werden in diesem Kapitel beschrieben und anschließend miteinander verglichen.
+ausgelesen. Beide Ansätze werden in diesem Kapitel beschrieben und anschließend miteinander verglichen.
 
 \input{kapitel/unterkapitel/loesung/ingestion/api}
 \input{kapitel/unterkapitel/loesung/ingestion/csv}
