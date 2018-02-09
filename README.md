@@ -51,7 +51,7 @@
 15. https://www.confluent.io/blog/simplest-useful-kafka-connect-data-pipeline-world-thereabouts-part-1/
 16. https://docs.confluent.io/current/installation/installing_cp.html
 
-## Interessante Links
+## Further Links
 1. http://jupyter-gmaps.readthedocs.io/en/latest/tutorial.html#basic-concepts
 2. https://plot.ly/python/ipython-notebook-tutorial/
 3. https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
@@ -59,20 +59,32 @@
 # SQL Statements
 
 ``` sql
-select complaint_type, count(complaint_type) from service_request group by complaint_type having count(complaint_type) > 400 and count(complaint_type) < 8000
+SELECT complaint_type, COUNT(complaint_type)
+FROM service_request
+GROUP BY complaint_type
+HAVING COUNT(complaint_type) > 400 AND COUNT(complaint_type) < 8000
 ```
 ``` sql
-select descriptor, count(descriptor) from service_request group by descriptor having count(descriptor) > 8
+SELECT descriptor, COUNT(descriptor)
+FROM service_request
+GROUP BY descriptor
+HAVING COUNT(descriptor) > 8
 ```
 ``` sql
-SELECT longitude, latitude from service_request where complaint_type = 'Noise - Residential' and latitude is not null and longitude is not null
+SELECT longitude, latitude
+FROM service_request
+WHERE complaint_type = 'Noise - Residential' AND latitude IS NOT NULL AND longitude IS NOT NULL
 ```
 ``` sql
-SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum FROM service_request where EXTRACT(year from created_date) = '2017' GROUP BY dd ORDER BY date_trunc('day', created_date)
+SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum
+FROM service_request where EXTRACT(year from created_date) = '2017'
+GROUP BY dd ORDER BY date_trunc('day', created_date)
 ```
 ``` sql
-
+SELECT AVG(closed\_date - created\_date) AS avg\_duration, MIN(closed\_date - created\_date) AS min\_duration, MAX(closed\_date - created\_date) AS max\_duration, complaint\_type
+FROM service\_request
+WHERE created\_date IS NOT NULL AND closed\_date IS NOT NULL
+GROUP BY complaint\_type
+HAVING MAX(closed\_date - created\_date) < INTERVAL '365 days' AND MIN(closed\_date - created\_date) > '00:00:00'
+ORDER BY avg\_duration ASC
 ```
-//TODO in notebook ausrechnen: Durschnitt der Dauer von einem Descriptor Typ
-select created_date, (closed_date - created_date) as duration, descriptor from service_request where created_date is not null and closed_date is not null order by duration desc
-http://bokeh.pydata.org/en/latest/docs/user_guide/categorical.html#heat-maps
