@@ -76,9 +76,9 @@ FROM service_request
 WHERE complaint_type = 'Noise - Residential' AND latitude IS NOT NULL AND longitude IS NOT NULL
 ```
 ``` sql
-SELECT date_trunc('day', created_date) AS dd, count(created_date) as daily_sum
-FROM service_request where EXTRACT(year from created_date) = '2017'
-GROUP BY dd ORDER BY date_trunc('day', created_date)
+SELECT DATE_TRUNC('day', created_date) AS dd, COUNT(created_date) AS daily_sum
+FROM service_request WHERE EXTRACT(year from created_date) = '2017'
+GROUP BY dd ORDER BY DATE_TRUNC('day', created_date)
 ```
 ``` sql
 SELECT AVG(closed_date - created_date) AS avg_duration, MIN(closed_date - created_date) AS min_duration, MAX(closed_date - created_date) AS max_duration, complaint_type
