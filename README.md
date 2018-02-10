@@ -81,10 +81,10 @@ FROM service_request where EXTRACT(year from created_date) = '2017'
 GROUP BY dd ORDER BY date_trunc('day', created_date)
 ```
 ``` sql
-SELECT AVG(closed\_date - created\_date) AS avg\_duration, MIN(closed\_date - created\_date) AS min\_duration, MAX(closed\_date - created\_date) AS max\_duration, complaint\_type
-FROM service\_request
-WHERE created\_date IS NOT NULL AND closed\_date IS NOT NULL
-GROUP BY complaint\_type
-HAVING MAX(closed\_date - created\_date) < INTERVAL '365 days' AND MIN(closed\_date - created\_date) > '00:00:00'
-ORDER BY avg\_duration ASC
+SELECT AVG(closed_date - created_date) AS avg_duration, MIN(closed_date - created_date) AS min_duration, MAX(closed_date - created_date) AS max_duration, complaint_type
+FROM service_request
+WHERE created_date IS NOT NULL AND closed_date IS NOT NULL
+GROUP BY complaint_type
+HAVING MAX(closed_date - created_date) < INTERVAL '365 days' AND MIN(closed_date - created_date) > '00:00:00'
+ORDER BY avg_duration ASC
 ```
