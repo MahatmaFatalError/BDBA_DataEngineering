@@ -381,5 +381,3 @@ local.properties
 
 # End of https://www.gitignore.io/api/eclipse
 java/dataengineering.iml
-
-*.html
